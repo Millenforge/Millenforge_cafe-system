@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingBag, Search, Coffee, Award, Star, Mail, Phone, Globe, MessageCircle, Camera, MapPin } from 'lucide-react';
+import { ShoppingBag, Search, Coffee, Award, Star, Mail, Phone, Globe, MessageCircle, Camera, MapPin, Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
@@ -64,6 +64,7 @@ function HomeContent() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [tableNumber, setTableNumber] = useState<string | null>(null);
   const [currentDay, setCurrentDay] = useState(new Date().getDay());
 
@@ -148,9 +149,67 @@ function HomeContent() {
                   </motion.span>
                 )}
               </button>
+
+              <button 
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="lg:hidden p-2 rounded-full hover:bg-coffee-100 dark:hover:bg-coffee-900 transition-colors"
+              >
+                {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              </button>
             </div>
           </div>
         </div>
+
+        {/* Mobile Menu Overlay */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="lg:hidden bg-background border-b border-border overflow-hidden"
+            >
+              <div className="px-4 pt-2 pb-6 space-y-2">
+                <Link 
+                  href="#menu" 
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block px-4 py-3 text-lg font-medium text-foreground hover:bg-coffee-50 dark:hover:bg-coffee-900/30 rounded-xl"
+                >
+                  Menu
+                </Link>
+                <Link 
+                  href="#hub" 
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block px-4 py-3 text-lg font-medium text-foreground hover:bg-coffee-50 dark:hover:bg-coffee-900/30 rounded-xl"
+                >
+                  Rewards
+                </Link>
+                <Link 
+                  href="#about" 
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block px-4 py-3 text-lg font-medium text-foreground hover:bg-coffee-50 dark:hover:bg-coffee-900/30 rounded-xl"
+                >
+                  Ambience
+                </Link>
+                <div className="pt-4 flex flex-col gap-3">
+                  <motion.div className="flex items-center justify-between bg-coffee-100 dark:bg-coffee-900/50 px-6 py-4 rounded-2xl border border-coffee-200 dark:border-coffee-800">
+                    <div className="flex items-center gap-3">
+                      <Award className="h-5 w-5 text-coffee-600" />
+                      <span className="font-bold text-coffee-900 dark:text-coffee-100">Your Rewards</span>
+                    </div>
+                    <span className="text-lg font-black text-coffee-700">{points} Pts</span>
+                  </motion.div>
+                  <button 
+                    onClick={() => { setIsBookingOpen(true); setIsMobileMenuOpen(false); }}
+                    className="w-full py-4 bg-coffee-600 text-white rounded-2xl font-bold shadow-lg shadow-coffee-600/30"
+                  >
+                    Book a Table
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
 
       <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
