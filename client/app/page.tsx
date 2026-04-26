@@ -122,7 +122,7 @@ function HomeContent() {
           <div className="flex justify-between items-center h-20">
             <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
               <Coffee className="h-8 w-8 text-coffee-600" />
-              <span className="text-2xl font-bold tracking-tight text-foreground hidden xs:block">Brew & Bites</span>
+              <span className="text-2xl font-bold tracking-tight text-foreground hidden sm:block">Brew & Bites</span>
             </div>
             
             <div className="hidden lg:flex space-x-8">
@@ -132,15 +132,17 @@ function HomeContent() {
             </div>
 
             <div className="flex items-center space-x-2 md:space-x-4">
-              <motion.div whileHover={{ scale: 1.05 }} className="hidden sm:flex items-center gap-2 bg-coffee-100 dark:bg-coffee-900/50 px-4 py-2 rounded-full border border-coffee-200 dark:border-coffee-800 shadow-sm">
+              <motion.div whileHover={{ scale: 1.05 }} className="hidden xl:flex items-center gap-2 bg-coffee-100 dark:bg-coffee-900/50 px-4 py-2 rounded-full border border-coffee-200 dark:border-coffee-800 shadow-sm">
                 <Award className="h-4 w-4 text-coffee-600" />
                 <span className="text-sm font-bold text-coffee-900 dark:text-coffee-100">{points} Pts</span>
               </motion.div>
-              <div className="flex items-center bg-coffee-50 dark:bg-coffee-900/30 rounded-full px-4 py-2 border border-border focus-within:border-coffee-500 transition-all">
+              <div className="hidden lg:flex items-center bg-coffee-50 dark:bg-coffee-900/30 rounded-full px-4 py-2 border border-border focus-within:border-coffee-500 transition-all">
                 <Search className="h-4 w-4 text-foreground/40 mr-2" />
                 <input type="text" placeholder="Search menu..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="bg-transparent border-none focus:ring-0 text-sm w-24 md:w-48 outline-none" />
               </div>
-              <VoiceSearch onSearch={setSearchQuery} />
+              <div className="hidden sm:block">
+                <VoiceSearch onSearch={setSearchQuery} />
+              </div>
               <button onClick={() => setIsCartOpen(true)} className="relative p-2 rounded-full hover:bg-coffee-100 dark:hover:bg-coffee-900 transition-colors">
                 <ShoppingBag className="h-5 w-5 text-foreground" />
                 {cartCount > 0 && (
@@ -170,6 +172,13 @@ function HomeContent() {
               className="lg:hidden bg-background border-b border-border overflow-hidden"
             >
               <div className="px-4 pt-2 pb-6 space-y-2">
+                <Link 
+                  href="#" 
+                  onClick={() => { window.scrollTo({top: 0, behavior: 'smooth'}); setIsMobileMenuOpen(false); }}
+                  className="block px-4 py-3 text-lg font-medium text-foreground hover:bg-coffee-50 dark:hover:bg-coffee-900/30 rounded-xl"
+                >
+                  Home
+                </Link>
                 <Link 
                   href="#menu" 
                   onClick={() => setIsMobileMenuOpen(false)}
