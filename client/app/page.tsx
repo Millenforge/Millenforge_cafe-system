@@ -154,69 +154,81 @@ function HomeContent() {
 
               <button 
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="lg:hidden p-2 rounded-full hover:bg-coffee-100 dark:hover:bg-coffee-900 transition-colors"
+                className="lg:hidden p-3 rounded-2xl bg-coffee-100 dark:bg-coffee-900/50 text-coffee-600 border border-coffee-200 dark:border-coffee-800 transition-all active:scale-90"
+                aria-label="Toggle Menu"
               >
-                {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                <Menu className="h-6 w-6" />
               </button>
             </div>
           </div>
         </div>
 
-        {/* Mobile Menu Overlay */}
+        {/* Improved Mobile Menu - Full Screen Drawer */}
         <AnimatePresence>
           {isMobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className="lg:hidden bg-background border-b border-border overflow-hidden"
-            >
-              <div className="px-4 pt-2 pb-6 space-y-2">
-                <Link 
-                  href="#" 
-                  onClick={() => { window.scrollTo({top: 0, behavior: 'smooth'}); setIsMobileMenuOpen(false); }}
-                  className="block px-4 py-3 text-lg font-medium text-foreground hover:bg-coffee-50 dark:hover:bg-coffee-900/30 rounded-xl"
-                >
-                  Home
-                </Link>
-                <Link 
-                  href="#menu" 
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block px-4 py-3 text-lg font-medium text-foreground hover:bg-coffee-50 dark:hover:bg-coffee-900/30 rounded-xl"
-                >
-                  Menu
-                </Link>
-                <Link 
-                  href="#hub" 
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block px-4 py-3 text-lg font-medium text-foreground hover:bg-coffee-50 dark:hover:bg-coffee-900/30 rounded-xl"
-                >
-                  Rewards
-                </Link>
-                <Link 
-                  href="#about" 
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block px-4 py-3 text-lg font-medium text-foreground hover:bg-coffee-50 dark:hover:bg-coffee-900/30 rounded-xl"
-                >
-                  Ambience
-                </Link>
-                <div className="pt-4 flex flex-col gap-3">
-                  <motion.div className="flex items-center justify-between bg-coffee-100 dark:bg-coffee-900/50 px-6 py-4 rounded-2xl border border-coffee-200 dark:border-coffee-800">
-                    <div className="flex items-center gap-3">
-                      <Award className="h-5 w-5 text-coffee-600" />
-                      <span className="font-bold text-coffee-900 dark:text-coffee-100">Your Rewards</span>
+            <div className="fixed inset-0 z-[100] lg:hidden">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="absolute inset-0 bg-background/95 backdrop-blur-xl"
+              />
+              <motion.div
+                initial={{ x: '100%' }}
+                animate={{ x: 0 }}
+                exit={{ x: '100%' }}
+                transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+                className="absolute right-0 top-0 bottom-0 w-[85%] max-w-sm bg-card border-l border-border shadow-2xl flex flex-col p-8"
+              >
+                <div className="flex justify-between items-center mb-12">
+                  <div className="flex items-center gap-2">
+                    <Coffee className="h-8 w-8 text-coffee-600" />
+                    <span className="text-2xl font-bold">Menu</span>
+                  </div>
+                  <button onClick={() => setIsMobileMenuOpen(false)} className="p-3 rounded-full hover:bg-coffee-50 transition-colors">
+                    <X className="h-6 w-6 text-foreground" />
+                  </button>
+                </div>
+
+                <nav className="flex flex-col gap-4">
+                  {[
+                    { name: 'Home', href: '#' },
+                    { name: 'Our Menu', href: '#menu' },
+                    { name: 'Rewards & Points', href: '#hub' },
+                    { name: 'Cafe Ambience', href: '#about' }
+                  ].map((link) => (
+                    <Link 
+                      key={link.name}
+                      href={link.href}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="group flex items-center justify-between p-5 rounded-2xl bg-background border border-border hover:border-coffee-300 hover:bg-coffee-50 transition-all"
+                    >
+                      <span className="text-xl font-bold text-foreground group-hover:text-coffee-600">{link.name}</span>
+                      <Star className="w-5 h-5 text-coffee-300 group-hover:text-coffee-500 transition-colors" />
+                    </Link>
+                  ))}
+                </nav>
+
+                <div className="mt-auto space-y-6">
+                  <div className="bg-coffee-600 rounded-3xl p-6 text-white shadow-xl shadow-coffee-600/30">
+                    <div className="flex items-center gap-3 mb-2">
+                      <Award className="w-5 h-5" />
+                      <span className="text-sm font-bold opacity-80 uppercase tracking-widest">Loyalty Status</span>
                     </div>
-                    <span className="text-lg font-black text-coffee-700">{points} Pts</span>
-                  </motion.div>
+                    <p className="text-3xl font-black">{points} Points</p>
+                    <p className="text-xs mt-2 opacity-60 italic">Scan QR at the counter to redeem</p>
+                  </div>
+
                   <button 
                     onClick={() => { setIsBookingOpen(true); setIsMobileMenuOpen(false); }}
-                    className="w-full py-4 bg-coffee-600 text-white rounded-2xl font-bold shadow-lg shadow-coffee-600/30"
+                    className="w-full py-5 bg-foreground text-background rounded-2xl font-bold text-lg shadow-lg"
                   >
                     Book a Table
                   </button>
                 </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            </div>
           )}
         </AnimatePresence>
       </nav>
@@ -253,9 +265,19 @@ function HomeContent() {
               </motion.div>
             )}
           </div>
-          <div className="flex justify-center flex-wrap gap-4 mb-12">
+          <div className="flex sm:justify-center overflow-x-auto no-scrollbar gap-4 mb-12 px-4 pb-4">
             {categories.map((category) => (
-              <button key={category} onClick={() => setActiveCategory(category)} className={`px-6 py-2 rounded-full border transition-all font-medium ${activeCategory === category ? 'bg-coffee-600 text-white border-coffee-600 shadow-md' : 'border-border hover:border-coffee-500 hover:text-coffee-600'}`}>{category}</button>
+              <button 
+                key={category} 
+                onClick={() => setActiveCategory(category)} 
+                className={`px-6 py-3 rounded-full border transition-all font-bold whitespace-nowrap ${
+                  activeCategory === category 
+                    ? 'bg-coffee-600 text-white border-coffee-600 shadow-lg shadow-coffee-600/30' 
+                    : 'border-border bg-card text-foreground/70 hover:border-coffee-500 hover:text-coffee-600'
+                }`}
+              >
+                {category}
+              </button>
             ))}
           </div>
           <AnimatePresence mode="wait">
