@@ -164,74 +164,69 @@ function HomeContent() {
         </div>
       </nav>
 
-      {/* Improved Mobile Menu - Full Screen Drawer (Moved outside nav for better stacking) */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <div className="fixed inset-0 z-[100] lg:hidden">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="absolute inset-0 bg-background/95 backdrop-blur-xl"
-            />
-            <motion.div
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="absolute right-0 top-0 bottom-0 w-[85%] max-w-sm bg-card border-l border-border shadow-2xl flex flex-col p-8"
-            >
-              <div className="flex justify-between items-center mb-12">
-                <div className="flex items-center gap-2">
-                  <Coffee className="h-8 w-8 text-coffee-600" />
-                  <span className="text-2xl font-bold">Menu</span>
-                </div>
-                <button onClick={() => setIsMobileMenuOpen(false)} className="p-3 rounded-full hover:bg-coffee-50 transition-colors">
-                  <X className="h-6 w-6 text-foreground" />
-                </button>
+      {/* Reliable Mobile Menu Drawer - No complex animations for better mobile compatibility */}
+      {isMobileMenuOpen && (
+        <div className="fixed inset-0 z-[100] lg:hidden">
+          {/* Backdrop */}
+          <div 
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+          />
+          {/* Sidebar */}
+          <div 
+            className="absolute right-0 top-0 bottom-0 w-[85%] max-w-sm bg-card border-l border-border shadow-2xl flex flex-col p-8 transition-transform duration-300 transform translate-x-0"
+          >
+            <div className="flex justify-between items-center mb-12">
+              <div className="flex items-center gap-2">
+                <Coffee className="h-8 w-8 text-coffee-600" />
+                <span className="text-2xl font-bold">Menu</span>
               </div>
+              <button 
+                onClick={() => setIsMobileMenuOpen(false)} 
+                className="p-3 rounded-full hover:bg-coffee-50 transition-colors"
+              >
+                <X className="h-6 w-6 text-foreground" />
+              </button>
+            </div>
 
-              <nav className="flex flex-col gap-4">
-                {[
-                  { name: 'Home', href: '#' },
-                  { name: 'Our Menu', href: '#menu' },
-                  { name: 'Rewards & Points', href: '#hub' },
-                  { name: 'Cafe Ambience', href: '#about' }
-                ].map((link) => (
-                  <Link 
-                    key={link.name}
-                    href={link.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="group flex items-center justify-between p-5 rounded-2xl bg-background border border-border hover:border-coffee-300 hover:bg-coffee-50 transition-all"
-                  >
-                    <span className="text-xl font-bold text-foreground group-hover:text-coffee-600">{link.name}</span>
-                    <Star className="w-5 h-5 text-coffee-300 group-hover:text-coffee-500 transition-colors" />
-                  </Link>
-                ))}
-              </nav>
-
-              <div className="mt-auto space-y-6">
-                <div className="bg-coffee-600 rounded-3xl p-6 text-white shadow-xl shadow-coffee-600/30">
-                  <div className="flex items-center gap-3 mb-2">
-                    <Award className="w-5 h-5" />
-                    <span className="text-sm font-bold opacity-80 uppercase tracking-widest">Loyalty Status</span>
-                  </div>
-                  <p className="text-3xl font-black">{points} Points</p>
-                  <p className="text-xs mt-2 opacity-60 italic">Scan QR at the counter to redeem</p>
-                </div>
-
-                <button 
-                  onClick={() => { setIsBookingOpen(true); setIsMobileMenuOpen(false); }}
-                  className="w-full py-5 bg-foreground text-background rounded-2xl font-bold text-lg shadow-lg"
+            <nav className="flex flex-col gap-4">
+              {[
+                { name: 'Home', href: '#' },
+                { name: 'Our Menu', href: '#menu' },
+                { name: 'Rewards & Points', href: '#hub' },
+                { name: 'Cafe Ambience', href: '#about' }
+              ].map((link) => (
+                <Link 
+                  key={link.name}
+                  href={link.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center justify-between p-5 rounded-2xl bg-background border border-border hover:border-coffee-300 hover:bg-coffee-50 transition-all"
                 >
-                  Book a Table
-                </button>
+                  <span className="text-xl font-bold text-foreground">{link.name}</span>
+                  <Star className="w-5 h-5 text-coffee-500" />
+                </Link>
+              ))}
+            </nav>
+
+            <div className="mt-auto space-y-6">
+              <div className="bg-coffee-600 rounded-3xl p-6 text-white shadow-xl shadow-coffee-600/30">
+                <div className="flex items-center gap-3 mb-2">
+                  <Award className="w-5 h-5" />
+                  <span className="text-sm font-bold opacity-80 uppercase tracking-widest">Loyalty Status</span>
+                </div>
+                <p className="text-3xl font-black">{points} Points</p>
               </div>
-            </motion.div>
+
+              <button 
+                onClick={() => { setIsBookingOpen(true); setIsMobileMenuOpen(false); }}
+                className="w-full py-5 bg-foreground text-background rounded-2xl font-bold text-lg shadow-lg active:scale-95 transition-all"
+              >
+                Book a Table
+              </button>
+            </div>
           </div>
-        )}
-      </AnimatePresence>
+        </div>
+      )}
 
       <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
         <div className="absolute inset-0 z-0">
