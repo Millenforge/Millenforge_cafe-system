@@ -218,11 +218,11 @@ function HomeContent() {
               </div>
 
               <button 
-                onClick={() => { setIsBookingOpen(true); setIsMobileMenuOpen(false); }}
-                className="w-full py-5 bg-foreground text-background rounded-2xl font-bold text-lg shadow-lg active:scale-95 transition-all"
-              >
-                Book a Table
-              </button>
+              onClick={() => { setIsBookingOpen(true); setIsMobileMenuOpen(false); }}
+              className="w-full py-5 bg-white text-foreground border border-border rounded-2xl font-bold text-lg shadow-sm active:scale-95 transition-all"
+            >
+              Book a Table
+            </button>
             </div>
           </div>
         </div>
@@ -239,7 +239,7 @@ function HomeContent() {
             <p className="text-lg md:text-xl text-foreground/80 mb-8 max-w-xl leading-relaxed">Experience artisanal coffee, delightful snacks, and an ambiance that feels like home.</p>
             <div className="flex flex-wrap justify-center md:justify-start gap-4">
               <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth' })} className="px-8 py-4 bg-coffee-600 text-white rounded-full font-semibold shadow-lg shadow-coffee-600/30 hover:bg-coffee-700 transition-colors">View Menu</motion.button>
-              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => setIsBookingOpen(true)} className="px-8 py-4 bg-transparent border-2 border-coffee-600 text-coffee-600 rounded-full font-semibold hover:bg-coffee-50 dark:hover:bg-coffee-900/50 transition-colors">Book a Table</motion.button>
+              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => setIsBookingOpen(true)} className="px-8 py-4 bg-white border-2 border-coffee-600 text-coffee-600 rounded-full font-semibold hover:bg-coffee-50 dark:bg-white dark:text-coffee-900 transition-colors shadow-lg shadow-coffee-600/10">Book a Table</motion.button>
             </div>
           </motion.div>
         </div>
