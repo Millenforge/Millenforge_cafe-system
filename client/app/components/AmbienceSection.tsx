@@ -1,7 +1,9 @@
 'use client';
 
+import React from 'react';
 import { motion } from 'framer-motion';
 import { MessageCircle, MapPin, Clock, Camera } from 'lucide-react';
+import GalleryModal from './GalleryModal';
 
 export default function AmbienceSection() {
   const images = [
@@ -26,6 +28,8 @@ export default function AmbienceSection() {
       desc: 'The perfect place to unwind after work.'
     }
   ];
+
+  const [isGalleryOpen, setIsGalleryOpen] = React.useState(false);
 
   return (
     <section id="about" className="py-24 bg-background">
@@ -55,15 +59,23 @@ export default function AmbienceSection() {
                   <p className="text-sm text-foreground/60">8:00 AM - 10:00 PM</p>
                 </div>
               </div>
-              <div className="flex items-start gap-4">
-                <div className="p-3 bg-coffee-50 dark:bg-coffee-900/30 rounded-xl">
+              <a 
+                href="https://maps.google.com/?q=HSR+Layout,+Bangalore" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="flex items-start gap-4 group cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900/50 p-2 -m-2 rounded-2xl transition-all"
+              >
+                <div className="p-3 bg-coffee-50 dark:bg-coffee-900/30 rounded-xl group-hover:scale-110 group-hover:shadow-md transition-all">
                   <MapPin className="w-6 h-6 text-coffee-600" />
                 </div>
                 <div>
-                  <h4 className="font-bold">Location</h4>
+                  <h4 className="font-bold group-hover:text-coffee-600 transition-colors">Location</h4>
                   <p className="text-sm text-foreground/60">HSR Layout, Bangalore</p>
+                  <p className="text-xs text-coffee-500 font-medium mt-1 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
+                    Open Map &rarr;
+                  </p>
                 </div>
-              </div>
+              </a>
             </div>
           </div>
 
@@ -98,10 +110,16 @@ export default function AmbienceSection() {
           <p className="text-foreground/60 mb-8 max-w-xl mx-auto">Follow us on Instagram and tag your photos to get featured on our wall and earn 100 extra loyalty points!</p>
           <div className="flex justify-center gap-4">
             <button className="px-8 py-4 bg-coffee-600 text-white rounded-full font-bold shadow-lg shadow-coffee-600/30 hover:bg-coffee-700 transition-all">Follow Us</button>
-            <button className="px-8 py-4 bg-white dark:bg-background border border-border rounded-full font-bold hover:bg-gray-50 dark:hover:bg-gray-900 transition-all">View Gallery</button>
+            <button 
+              onClick={() => setIsGalleryOpen(true)}
+              className="px-8 py-4 bg-white dark:bg-background border border-border rounded-full font-bold hover:bg-gray-50 dark:hover:bg-gray-900 transition-all"
+            >
+              View Gallery
+            </button>
           </div>
         </div>
       </div>
+      <GalleryModal isOpen={isGalleryOpen} onClose={() => setIsGalleryOpen(false)} />
     </section>
   );
 }

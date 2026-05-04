@@ -61,8 +61,8 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
             ) : (
               <>
                 <div className="p-6 border-b border-border flex justify-between items-center">
-                  <h2 className="text-2xl font-bold text-coffee-900 dark:text-coffee-100">Book a Table</h2>
-                  <button onClick={onClose} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800">
+                  <h2 className="text-2xl font-bold text-white" style={{ color: 'white' }}>Book a Table</h2>
+                  <button onClick={onClose} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-foreground transition-colors">
                     <X className="w-6 h-6" />
                   </button>
                 </div>
