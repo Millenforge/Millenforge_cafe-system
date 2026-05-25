@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0f0c0b">
+    <title>Smart Café | Book a Table</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        html { background: #0f0c0b; }
+
+        .booking-page {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            overflow-y: auto;
+            transition: 0.8s cubic-bezier(0.7, 0, 0.3, 1);
+        }
+
+        /* Hero */
+        .booking-hero {
+            position: relative;
+            height: 280px;
+            overflow: hidden;
+        }
+
+        .booking-hero img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            animation: kenburns 20s linear infinite;
+        }
+
+        .booking-hero-overlay {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(15,12,11,0.3) 0%, rgba(15,12,11,1) 100%);
+        }
+
+        .booking-hero-content {
+            position: absolute;
+            bottom: 30px;
+            left: 5%;
+            z-index: 5;
+        }
+
+        .booking-hero-content .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 50px;
+            padding: 8px 16px;
+            color: #fff;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+            text-decoration: none;
+        }
+
+        .booking-hero-content .back-btn:hover {
+            background: rgba(212,163,115,0.15);
+            border-color: var(--accent-color);
+        }
+
+        .booking-hero-content h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #fff, var(--accent-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .booking-hero-content p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        /* Booking Form */
+        .booking-layout {
+            max-width: 600px;
+            margin: -30px auto 60px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .booking-card {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(212,163,115,0.15);
+            border-radius: 24px;
+            padding: 30px;
+        }
+
+        .booking-card h2 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            margin-bottom: 25px;
+            color: #fff;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-field {
+            margin-bottom: 18px;
+        }
+
+        .form-field label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .form-field input,
+        .form-field select {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 14px;
+            border: 1px solid rgba(212,163,115,0.2);
+            background: rgba(255,255,255,0.04);
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 600;
+            outline: none;
+            transition: border-color 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-field input:focus,
+        .form-field select:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(212,163,115,0.15);
+        }
+
+        .form-field input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .form-field select option {
+            background: #1a1512;
+            color: #fff;
+        }
+
+        /* Table Grid */
+        .table-selector {
+            margin-bottom: 25px;
+        }
+
+        .table-selector label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .table-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .table-option {
+            padding: 12px 8px;
+            border-radius: 14px;
+            border: 1px solid rgba(212,163,115,0.15);
+            background: rgba(255,255,255,0.03);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .table-option:hover {
+            border-color: var(--accent-color);
+            background: rgba(212,163,115,0.05);
+        }
+
+        .table-option.selected {
+            border-color: var(--accent-color);
+            background: linear-gradient(135deg, rgba(212,163,115,0.2), rgba(212,163,115,0.05));
+            box-shadow: 0 4px 15px rgba(212,163,115,0.2);
+        }
+
+        .table-option .table-icon {
+            font-size: 1.3rem;
+            margin-bottom: 4px;
+        }
+
+        .table-option .table-num {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .table-option.selected .table-num {
+            color: var(--accent-color);
+        }
+
+        .table-option.booked {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .table-option.booked .table-num {
+            text-decoration: line-through;
+        }
+
+        /* Submit */
+        .booking-submit {
+            width: 100%;
+            padding: 16px;
+            border-radius: 50px;
+            border: none;
+            background: linear-gradient(135deg, var(--accent-color), #e8c994);
+            color: #000;
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(212,163,115,0.3);
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .booking-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(212,163,115,0.4);
+        }
+
+        /* Success State */
+        .booking-success {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .booking-success .success-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .booking-success h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .booking-success p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .booking-success .detail-chip {
+            display: inline-block;
+            background: rgba(212,163,115,0.1);
+            border: 1px solid rgba(212,163,115,0.2);
+            border-radius: 50px;
+            padding: 8px 18px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin: 4px;
+        }
+
+        @media (max-width: 500px) {
+            .table-grid { grid-template-columns: repeat(3, 1fr); }
+            .form-row { grid-template-columns: 1fr; }
+            .booking-hero { height: 220px; }
+        }
+    </style>
+</head>
+    <nav class="navbar glass-panel" style="border-radius: 0; border-bottom: 1px solid var(--panel-border);">
+        <a href="home.html" class="navbar-brand">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 5px;"><path d="M17 8h1a4 4 0 1 1 0 8h-1"></path><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"></path><line x1="6" y1="2" x2="6" y2="4"></line><line x1="10" y1="2" x2="10" y2="4"></line><line x1="14" y1="2" x2="14" y2="4"></line></svg>
+            <span>Smart</span>Café
+        </a>
+        
+        <ul class="nav-links">
+            <li><a href="menu.html">Menu</a></li>
+            <li><a href="booking.html" class="active">Book a Table</a></li>
+            <li><a href="wishlist.html">Wishlist</a></li>
+            <li><a href="dashboard.html">My Orders</a></li>
+        </ul>
+
+        <div class="nav-actions">
+            <div class="nav-profile" onclick="window.location.href='profile.html'" title="My Profile" style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--accent-color); overflow: hidden; cursor: pointer; margin-left: 10px; display: flex; align-items: center; justify-content: center;">
+                <img src="" alt="P" id="navProfilePic" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                <svg id="profilePlaceholder" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            </div>
+            <button class="btn-icon" onclick="App.logout()" title="Logout" style="color: var(--danger); border-color: var(--danger); margin-left: 10px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            </button>
+        </div>
+    </nav>
+
+<div class="booking-page" id="bookingPage" style="margin-top: 70px;">
+    <!-- Hero -->
+    <div class="booking-hero">
+        <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1920&q=80" alt="Café Interior">
+        <div class="booking-hero-overlay"></div>
+        <div class="booking-hero-content">
+            <a href="menu.html" class="back-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                Back
+            </a>
+            <h1>Book a Table</h1>
+            <p>Reserve your perfect spot at Smart Café</p>
+        </div>
+    </div>
+
+    <!-- Form -->
+    <div class="booking-layout">
+        <div class="booking-card" id="bookingForm">
+            <h2>📋 Reservation Details</h2>
+
+            <div class="form-field">
+                <label>Your Name</label>
+                <input type="text" id="guestName" placeholder="Enter your name" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-field">
+                    <label>Date</label>
+                    <input type="date" id="bookDate" required>
+                </div>
+                <div class="form-field">
+                    <label>Time</label>
+                    <input type="time" id="bookTime" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-field">
+                    <label>Guests</label>
+                    <select id="bookGuests">
+                        <option value="1">1 Person</option>
+                        <option value="2" selected>2 People</option>
+                        <option value="3">3 People</option>
+                        <option value="4">4 People</option>
+                        <option value="5">5 People</option>
+                        <option value="6">6 People</option>
+                        <option value="8">8 People</option>
+                        <option value="10">10 People</option>
+                    </select>
+                </div>
+                <div class="form-field">
+                    <label>Phone</label>
+                    <input type="tel" id="bookPhone" placeholder="+91 XXXXX XXXXX">
+                </div>
+            </div>
+
+            <!-- Table Selection -->
+            <div class="table-selector">
+                <label>Choose Your Table</label>
+                <div class="table-grid" id="tableGrid">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <button class="booking-submit" onclick="submitBooking()">Confirm Reservation</button>
+        </div>
+
+        <!-- Success -->
+        <div class="booking-card booking-success" id="bookingSuccess">
+            <div class="success-icon">🎉</div>
+            <h2>Table Reserved!</h2>
+            <p id="successDetails"></p>
+            <div id="successChips"></div>
+            <br><br>
+            <button class="booking-submit" onclick="window.location.href='menu.html'" style="max-width: 280px; margin: 0 auto; display: block;">Explore Menu</button>
+        </div>
+    </div>
+</div>
+
+<script src="js/app.js"></script>
+<script>
+    // Auth check
+    if (!App.state.user) window.location.href = 'index.html';
+
+    // Set min date to today
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('bookDate').min = today;
+    document.getElementById('bookDate').value = today;
+
+    // Pre-fill name
+    if (App.state.user) {
+        document.getElementById('guestName').value = App.state.user.name || '';
+    }
+
+    // Render tables
+    const tables = [
+        { id: 'T1', seats: 2, icon: '🪑' },
+        { id: 'T2', seats: 2, icon: '🪑' },
+        { id: 'T3', seats: 4, icon: '🛋️' },
+        { id: 'T4', seats: 4, icon: '🛋️' },
+        { id: 'T5', seats: 6, icon: '🍽️' },
+        { id: 'T6', seats: 6, icon: '🍽️' },
+        { id: 'T7', seats: 8, icon: '👨‍👩‍👧‍👦' },
+        { id: 'T8', seats: 10, icon: '🎉' },
+    ];
+
+    // Get existing bookings
+    const existingBookings = JSON.parse(localStorage.getItem('tableBookings') || '[]');
+    const bookedToday = existingBookings.filter(b => b.date === today).map(b => b.table);
+
+    let selectedTable = null;
+    const grid = document.getElementById('tableGrid');
+
+    tables.forEach(t => {
+        const isBooked = bookedToday.includes(t.id);
+        const div = document.createElement('div');
+        div.className = 'table-option' + (isBooked ? ' booked' : '');
+        div.innerHTML = `
+            <div class="table-icon">${t.icon}</div>
+            <div class="table-num">${t.id} · ${t.seats}P</div>
+        `;
+        if (!isBooked) {
+            div.addEventListener('click', () => {
+                document.querySelectorAll('.table-option').forEach(o => o.classList.remove('selected'));
+                div.classList.add('selected');
+                selectedTable = t.id;
+            });
+        }
+        grid.appendChild(div);
+    });
+
+    function submitBooking() {
+        const name = document.getElementById('guestName').value;
+        const date = document.getElementById('bookDate').value;
+        const time = document.getElementById('bookTime').value;
+        const guests = document.getElementById('bookGuests').value;
+        const phone = document.getElementById('bookPhone').value;
+
+        if (!name || !date || !time) {
+            App.showToast('Please fill all required fields', 'error');
+            return;
+        }
+        if (!selectedTable) {
+            App.showToast('Please select a table', 'error');
+            return;
+        }
+
+        const booking = { name, date, time, guests, phone, table: selectedTable, id: Date.now() };
+        const bookings = JSON.parse(localStorage.getItem('tableBookings') || '[]');
+        bookings.push(booking);
+        localStorage.setItem('tableBookings', JSON.stringify(bookings));
+
+        // Show success
+        document.getElementById('bookingForm').style.display = 'none';
+        const success = document.getElementById('bookingSuccess');
+        success.style.display = 'block';
+        document.getElementById('successDetails').innerText =
+            `Your table ${selectedTable} has been reserved for ${guests} guest(s).`;
+        document.getElementById('successChips').innerHTML = `
+            <span class="detail-chip">📅 ${date}</span>
+            <span class="detail-chip">🕐 ${time}</span>
+            <span class="detail-chip">👥 ${guests} Guests</span>
+            <span class="detail-chip">🪑 Table ${selectedTable}</span>
+        `;
+
+        App.showToast('Table booked successfully! 🎉', 'success');
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Café | Admin Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body { background-color: #050505; }
+        
+        .layout {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+        }
+
+        .sidebar {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 20px;
+            padding: 20px;
+            height: calc(100vh - 40px);
+            position: sticky;
+            top: 20px;
+        }
+
+        .sidebar h2 { color: var(--accent-color); margin-bottom: 30px; text-align: center; }
+        
+        .admin-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .admin-nav-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-main);
+            padding: 12px 20px;
+            text-align: left;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 1rem;
+        }
+
+        .admin-nav-btn:hover, .admin-nav-btn.active {
+            background: rgba(212, 163, 115, 0.1);
+            border-color: var(--accent-color);
+            color: var(--accent-hover);
+        }
+
+        .content-section {
+            display: none;
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 20px;
+            padding: 30px;
+            min-height: calc(100vh - 40px);
+        }
+
+        .content-section.active { display: block; }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--panel-border);
+        }
+
+        th { color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.85rem; }
+        
+        .status-select {
+            background: rgba(0,0,0,0.3);
+            color: var(--text-main);
+            border: 1px solid var(--panel-border);
+            padding: 5px 10px;
+            border-radius: 8px;
+        }
+
+        .action-btn {
+            background: transparent;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: 5px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .action-btn:hover { background: var(--accent-color); color: #000; }
+
+        /* Form */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
+        .form-group label { color: var(--text-muted); font-size: 0.9rem; }
+        .form-group input, .form-group select {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--panel-border);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="layout animate-fade-in">
+        
+        <div class="sidebar">
+            <h2>🛠️ Admin Panel</h2>
+            <div class="admin-nav">
+                <button class="admin-nav-btn active" onclick="switchTab('orders')">Live Orders</button>
+                <button class="admin-nav-btn" onclick="switchTab('menu')">Menu Management</button>
+                <button class="admin-nav-btn" onclick="switchTab('qr')">Table QR Codes</button>
+                <button class="admin-nav-btn" onclick="switchTab('settings')">Settings</button>
+                <button class="admin-nav-btn" style="color: var(--danger); margin-top: auto;" onclick="window.location.href='index.html'">Logout Admin</button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            
+            <!-- Live Orders Tab -->
+            <div id="orders-tab" class="content-section active">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <h2 style="color: var(--accent-color)">Live Orders</h2>
+                    <button class="btn-icon" onclick="renderOrders()">🔄</button>
+                </div>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Items</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orders-table-body">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Menu Management Tab -->
+            <div id="menu-tab" class="content-section">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <h2 style="color: var(--accent-color)">Menu Items</h2>
+                    <button class="action-btn" onclick="document.getElementById('add-item-form').style.display='block'">+ Add Item</button>
+                </div>
+
+                <div id="add-item-form" style="display:none; background:rgba(0,0,0,0.2); padding:20px; border-radius:12px; margin-top:20px; border:1px solid var(--panel-border);">
+                    <h3>Add New Item</h3>
+                    <div class="form-grid" style="margin-top:15px;">
+                        <div class="form-group">
+                            <label>Item Name</label>
+                            <input type="text" placeholder="e.g. Latte">
+                        </div>
+                        <div class="form-group">
+                            <label>Price (₹)</label>
+                            <input type="number" placeholder="150">
+                        </div>
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select>
+                                <option>hot</option>
+                                <option>cold</option>
+                                <option>snacks</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Image URL</label>
+                            <input type="text" placeholder="https://...">
+                        </div>
+                    </div>
+                    <button class="action-btn" onclick="alert('Item Added (Mock)'); this.parentElement.style.display='none'">Save Item</button>
+                    <button class="action-btn" style="border-color:var(--danger); color:var(--danger)" onclick="this.parentElement.style.display='none'">Cancel</button>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="menu-table-body">
+                        <tr>
+                            <td>Classic Cappuccino</td>
+                            <td>hot</td>
+                            <td>₹150</td>
+                            <td>
+                                <button class="action-btn">Edit</button>
+                                <button class="action-btn" style="border-color:var(--danger); color:var(--danger)">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Avocado Toast</td>
+                            <td>snacks</td>
+                            <td>₹220</td>
+                            <td>
+                                <button class="action-btn">Edit</button>
+                                <button class="action-btn" style="border-color:var(--danger); color:var(--danger)">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- QR Codes Tab -->
+            <div id="qr-tab" class="content-section">
+                <h2 style="color: var(--accent-color); margin-bottom: 20px;">Generate Table QR Codes</h2>
+                <div class="form-grid" style="margin-bottom: 30px;">
+                    <div class="form-group">
+                        <label>Table Number</label>
+                        <input type="number" id="qr-table-num" placeholder="e.g. 5">
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="generateQR()">Generate QR</button>
+                
+                <div id="qr-result" style="margin-top: 30px; display: none; text-align: center; background: white; padding: 20px; border-radius: 12px; width: fit-content;">
+                    <img id="qr-img" src="" alt="QR Code" style="width: 200px; height: 200px;">
+                    <p style="color: black; margin-top: 10px; font-weight: bold;" id="qr-label">Table 5</p>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="settings-tab" class="content-section">
+                <h2 style="color: var(--accent-color)">Cafe Settings</h2>
+                <div class="form-grid" style="margin-top:30px;">
+                    <div class="form-group">
+                        <label>Self-Service Mode</label>
+                        <select>
+                            <option>Enabled (QR Code Ordering)</option>
+                            <option>Disabled (Counter Only)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Tax Rate (%)</label>
+                        <input type="number" value="5">
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="alert('Settings Saved')">Save Settings</button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.admin-nav-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
+            document.getElementById(tabId + '-tab').classList.add('active');
+        }
+
+        function generateQR() {
+            const tableNum = document.getElementById('qr-table-num').value;
+            if(!tableNum) { alert('Enter a table number'); return; }
+            
+            // Generate full URL based on current host
+            const baseUrl = window.location.href.split('/').slice(0, -1).join('/');
+            const targetUrl = `${baseUrl}/index.html?table=${tableNum}`;
+            
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(targetUrl)}`;
+            document.getElementById('qr-img').src = qrUrl;
+            document.getElementById('qr-label').innerText = `Table ${tableNum}`;
+            document.getElementById('qr-result').style.display = 'block';
+        }
+
+        function renderOrders() {
+            const body = document.getElementById('orders-table-body');
+            const orders = JSON.parse(localStorage.getItem('smartCafeOrders')) || [];
+            
+            if(orders.length === 0){
+                body.innerHTML = '<tr><td colspan="6" style="text-align:center;">No active orders</td></tr>';
+                return;
+            }
+
+            body.innerHTML = orders.map((order, i) => `
+                <tr>
+                    <td><b>${order.id}</b></td>
+                    <td>Table 5 (Guest)</td>
+                    <td style="font-size:0.85rem;">${order.items.map(item => item.name).join(', ')}</td>
+                    <td>₹${order.total}</td>
+                    <td>
+                        <select class="status-select" onchange="updateStatus(${i}, this.value)">
+                            <option value="Received" ${order.status === 'Received' ? 'selected' : ''}>Received</option>
+                            <option value="Preparing" ${order.status === 'Preparing' ? 'selected' : ''}>Preparing</option>
+                            <option value="Ready" ${order.status === 'Ready' ? 'selected' : ''}>Ready</option>
+                            <option value="Completed" ${order.status === 'Completed' ? 'selected' : ''}>Completed</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button class="action-btn" onclick="alert('Printing Bill...')">Print Bill</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function updateStatus(index, newStatus) {
+            const orders = JSON.parse(localStorage.getItem('smartCafeOrders')) || [];
+            if(orders[index]){
+                orders[index].status = newStatus;
+                localStorage.setItem('smartCafeOrders', JSON.stringify(orders));
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', renderOrders);
+    </script>
+</body>
+</html>

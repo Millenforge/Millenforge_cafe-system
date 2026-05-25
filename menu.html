@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0f0c0b">
+    <title>Smart Café | Menu</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* New Desktop Premium Layout */
+        body { padding-bottom: 20px; }
+        
+        .menu-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 40px 20px;
+        }
+
+        .hero-banner {
+            position: relative;
+            width: 100%;
+            height: 350px;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-top: 30px;
+            margin-bottom: 40px;
+        }
+
+        .hero-banner .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 110%;
+            height: 110%;
+            background: url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            opacity: 0.6;
+            animation: kenburns 20s linear infinite;
+        }
+
+        .hero-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(15,12,11,0.9) 0%, rgba(15,12,11,0.3) 60%, transparent 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 50px;
+        }
+
+        .hero-subtitle {
+            color: var(--accent-color);
+            font-weight: 800;
+            letter-spacing: 2px;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            color: #fff;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            max-width: 600px;
+        }
+
+        .hero-desc {
+            color: #eee;
+            font-size: 1rem;
+            max-width: 500px;
+            line-height: 1.6;
+        }
+
+        .explore-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .explore-left {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .explore-title h2 {
+            font-size: 2.2rem;
+            color: #fff;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .explore-title p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 0;
+        }
+
+        .search-box {
+            position: relative;
+            width: 400px;
+            max-width: 100%;
+        }
+
+        .search-box input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 14px 55px 14px 45px;
+            color: #fff;
+            outline: none;
+            font-size: 0.95rem;
+            transition: border-color 0.3s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--accent-color);
+        }
+
+        .search-box .search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .search-box .mic-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent-color);
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(212, 163, 115, 0.1);
+            border: 1px solid rgba(212, 163, 115, 0.3);
+            border-radius: 50%;
+            padding: 7px;
+            width: 32px;
+            height: 32px;
+            box-sizing: border-box;
+        }
+
+        .search-box .mic-icon:hover {
+            background: var(--accent-color);
+            color: #000;
+        }
+
+        .mic-active {
+            background: var(--accent-color) !important;
+            color: #000 !important;
+            animation: pulse-mic 1s infinite alternate;
+        }
+
+        @keyframes pulse-mic {
+            from { transform: translateY(-50%) scale(1); box-shadow: 0 0 0 rgba(212, 163, 115, 0.4); }
+            to { transform: translateY(-50%) scale(1.1); box-shadow: 0 0 15px rgba(212, 163, 115, 0.8); }
+        }
+
+        .sort-segmented {
+            display: inline-flex;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 4px;
+            gap: 5px;
+        }
+
+        .sort-seg-btn {
+            background: transparent;
+            color: var(--text-muted);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .sort-seg-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .sort-seg-btn.active {
+            background: var(--accent-color);
+            color: #000;
+            box-shadow: 0 4px 10px rgba(212, 163, 115, 0.3);
+        }
+
+        .sort-seg-btn svg {
+            width: 12px;
+            height: 12px;
+            transform: translateY(0.5px);
+            opacity: 0.7;
+            transition: all 0.3s;
+        }
+
+        .sort-seg-btn:hover svg,
+        .sort-seg-btn.active svg {
+            opacity: 1;
+            transform: translateY(0.5px) scale(1.1);
+        }
+
+        .category-filters {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            padding-bottom: 5px;
+            margin-bottom: 0;
+        }
+
+        .category-filters::-webkit-scrollbar { display: none; }
+
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 10px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .filter-btn.active {
+            background: var(--accent-color);
+            color: #000;
+            border-color: var(--accent-color);
+        }
+
+        .filter-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .section-title {
+            color: var(--accent-color);
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.1rem;
+        }
+
+        .menu-grid-desktop {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+
+        .card-desktop {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .card-desktop:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+        }
+
+        .card-img-wrapper {
+            width: 100%;
+            height: 180px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .card-rating {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            border: 1px solid rgba(212, 163, 115, 0.3);
+            z-index: 2;
+        }
+
+        .card-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .card-desktop:hover .card-img-wrapper img {
+            transform: scale(1.05);
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .card-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            line-height: 1.4;
+            flex-grow: 1;
+        }
+
+        .card-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-price {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--accent-color);
+        }
+
+        .card-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .heart-btn {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            opacity: 0.4;
+        }
+
+        .heart-btn.active {
+            opacity: 1;
+            border-color: var(--danger);
+        }
+
+        .add-to-cart-btn {
+            background: var(--accent-color);
+            color: #000;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .add-to-cart-btn:hover {
+            background: #faedcd;
+        }
+
+        /* Navbar active link fix */
+        .navbar .nav-links .active {
+            color: var(--accent-color);
+        }
+        .navbar .nav-links .active::after {
+            width: 100%;
+        }
+
+        @media (max-width: 1024px) {
+            .menu-grid-desktop { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .menu-grid-desktop { grid-template-columns: repeat(2, 1fr); }
+            .hero-title { font-size: 2.2rem; }
+            .hero-banner { height: 250px; }
+            .hero-content { padding: 30px; }
+            .search-box { width: 100%; }
+        }
+
+        @media (max-width: 480px) {
+            .menu-grid-desktop { grid-template-columns: 1fr; }
+        }
+        /* Customizer Modal */
+        .customizer-modal {
+            max-width: 450px;
+            width: 90%;
+            padding: 30px;
+        }
+
+        .customizer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .customizer-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.8rem;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .option-group {
+            margin-bottom: 25px;
+        }
+
+        .option-label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .option-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .option-btn {
+            padding: 12px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option-btn:hover {
+            border-color: rgba(212, 163, 115, 0.3);
+            background: rgba(212, 163, 115, 0.05);
+        }
+
+        .option-btn.selected {
+            border-color: var(--accent-color);
+            background: rgba(212, 163, 115, 0.15);
+            color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(212, 163, 115, 0.2);
+        }
+
+        /* Sugar Level Slider */
+        .sugar-level-wrap {
+            padding: 10px 0;
+        }
+
+        .sugar-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            outline: none;
+        }
+
+        .sugar-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(212, 163, 115, 0.5);
+            border: 3px solid #0f0c0b;
+        }
+
+        .sugar-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        .sugar-labels span {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .confirm-btn {
+            width: 100%;
+            padding: 16px;
+            border-radius: 14px;
+            border: none;
+            background: var(--accent-color);
+            color: #000;
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            margin-top: 10px;
+        }
+
+        .confirm-btn:hover {
+            transform: scale(1.02);
+            filter: brightness(1.1);
+            box-shadow: 0 10px 30px rgba(212, 163, 115, 0.3);
+        }
+        /* Menu Loyalty Card */
+        .menu-loyalty-card {
+            background: linear-gradient(135deg, rgba(212, 163, 115, 0.15), rgba(255,255,255,0.03));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 163, 115, 0.3);
+            border-radius: 20px;
+            padding: 15px 20px;
+            margin: 15px 0 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .menu-loyalty-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent-color);
+            background: rgba(212, 163, 115, 0.2);
+        }
+
+        .loyalty-label {
+            display: block;
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 2px;
+        }
+
+        .loyalty-pts-val {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .loyalty-action {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .loyalty-action span {
+            color: var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navbar -->
+    <nav class="navbar">
+        <a href="home.html" class="navbar-brand">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"></path><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"></path><line x1="6" y1="2" x2="6" y2="4"></line><line x1="10" y1="2" x2="10" y2="4"></line><line x1="14" y1="2" x2="14" y2="4"></line></svg>
+            <span>Smart</span> Café
+        </a>
+        <ul class="nav-links">
+            <li><a href="menu.html" class="active">Menu</a></li>
+            <li><a href="booking.html">Book a Table</a></li>
+            <li><a href="wishlist.html">Wishlist</a></li>
+            <li><a href="tracking.html">My Orders</a></li>
+            <li><a href="about.html">About Us</a></li>
+        </ul>
+        <div class="nav-actions">
+            <button class="btn-icon" onclick="window.location.href='cart.html'" style="position: relative;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                <span class="badge" id="cart-badge">0</span>
+            </button>
+            <div class="nav-profile" onclick="window.location.href='profile.html'" title="My Profile" style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--accent-color); overflow: hidden; cursor: pointer; margin-left: 10px; display: flex; align-items: center; justify-content: center;">
+                <img src="" alt="P" id="navProfilePic" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                <svg id="profilePlaceholder" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            </div>
+            <button class="btn-icon" onclick="App.logout()" title="Logout" style="color: var(--danger); border-color: var(--danger); margin-left: 10px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            </button>
+        </div>
+    </nav>
+
+    <div class="menu-container">
+        <!-- Hero Banner -->
+        <div class="hero-banner">
+            <div class="hero-bg"></div>
+            <div class="hero-content">
+                <span class="hero-subtitle">PREMIUM SELECTION</span>
+                <h1 class="hero-title">Crafted with<br>Passion & Care</h1>
+                <p class="hero-desc">Explore our curated collection of artisanal coffees and gourmet snacks, delivered right to your table.</p>
+            </div>
+        </div>
+
+        <div class="explore-section">
+            <div class="explore-left">
+                <div class="explore-title">
+                    <h2>Explore Menu</h2>
+                    <p>Discover your next favorite brew</p>
+                </div>
+                
+
+                <div class="category-filters" id="categoryContainer">
+                    <button class="filter-btn active" onclick="setCategory('all')">All</button>
+                    <button class="filter-btn" onclick="setCategory('popular')">Best Sellers</button>
+                    <button class="filter-btn" onclick="setCategory('hot')">Hot Coffee</button>
+                    <button class="filter-btn" onclick="setCategory('cold')">Cold Drinks</button>
+                    <button class="filter-btn" onclick="setCategory('bakery')">Snacks</button>
+                    <button class="filter-btn" onclick="setCategory('tea')">Premium Tea</button>
+                </div>
+            </div>
+            <div class="explore-right" style="display: flex; flex-direction: column; gap: 15px; align-items: flex-end;">
+                <div class="search-box">
+                    <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" id="searchInput" placeholder="Search for coffee, snacks...">
+                    <svg class="mic-icon" id="voiceSearchBtn" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+                </div>
+                <div class="sort-box">
+                    <div class="sort-segmented">
+                        <button class="sort-seg-btn active" onclick="setSort('default', this)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                            All
+                        </button>
+                        <button class="sort-seg-btn" onclick="setSort('lowToHigh', this)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+                            Low
+                        </button>
+                        <button class="sort-seg-btn" onclick="setSort('highToLow', this)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+                            High
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-title">
+            ✨ AI Recommended for You
+        </div>
+
+        <div class="menu-grid-desktop" id="menuGrid">
+            <!-- Rendered by JS -->
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Go to top">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+    </button>
+
+    <!-- Customization Modal -->
+    <div class="modal-overlay" id="customizerModal">
+        <div class="glass-panel customizer-modal animate-fade-in">
+            <div class="customizer-header">
+                <h2 class="customizer-title" id="customItemName">Customizer</h2>
+                <button class="close-modal" onclick="App.closeModal('customizerModal')">×</button>
+            </div>
+
+            <div id="drinkOptions">
+                <div class="option-group">
+                    <span class="option-label">Milk Preference</span>
+                    <div class="option-grid">
+                        <button class="option-btn selected" onclick="setOption('milk', 'Regular', this)">Regular</button>
+                        <button class="option-btn" onclick="setOption('milk', 'Oat Milk', this)">Oat Milk</button>
+                        <button class="option-btn" onclick="setOption('milk', 'Almond Milk', this)">Almond Milk</button>
+                        <button class="option-btn" onclick="setOption('milk', 'Soy Milk', this)">Soy Milk</button>
+                    </div>
+                </div>
+
+                <div class="option-group">
+                    <span class="option-label">Sugar Level</span>
+                    <div class="sugar-level-wrap">
+                        <input type="range" class="sugar-slider" id="sugarSlider" min="0" max="100" step="25" value="50">
+                        <div class="sugar-labels">
+                            <span>0%</span>
+                            <span>25%</span>
+                            <span>50%</span>
+                            <span>75%</span>
+                            <span>100%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="bakeryOptions" style="display: none;">
+                <div class="option-group">
+                    <span class="option-label">Preparation</span>
+                    <div class="option-grid">
+                        <button class="option-btn selected" onclick="setOption('prep', 'Warmed', this)">Warmed</button>
+                        <button class="option-btn" onclick="setOption('prep', 'Normal', this)">Normal</button>
+                    </div>
+                </div>
+            </div>
+
+            <button class="confirm-btn" id="confirmAddToCart" onclick="confirmCustomization()">
+                Add to Cart · ₹0
+            </button>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        let currentItem = null;
+        let selectedOptions = {};
+
+        function openCustomizer(item) {
+            currentItem = item;
+            selectedOptions = {};
+            
+            document.getElementById('customItemName').innerText = item.name;
+            document.getElementById('confirmAddToCart').innerText = `Add to Cart · ₹${item.price}`;
+            
+            // Toggle options based on category
+            if (item.category === 'bakery') {
+                document.getElementById('drinkOptions').style.display = 'none';
+                document.getElementById('bakeryOptions').style.display = 'block';
+                selectedOptions.prep = 'Warmed';
+            } else {
+                document.getElementById('drinkOptions').style.display = 'block';
+                document.getElementById('bakeryOptions').style.display = 'none';
+                selectedOptions.milk = 'Regular';
+                document.getElementById('sugarSlider').value = 50;
+            }
+            
+            // Reset button states
+            document.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('selected'));
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                if (btn.innerText === 'Regular' || btn.innerText === 'Warmed') btn.classList.add('selected');
+            });
+
+            App.openModal('customizerModal');
+        }
+
+        function setOption(type, value, btn) {
+            selectedOptions[type] = value;
+            // Update UI
+            const container = btn.parentElement;
+            container.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+        }
+
+        function confirmCustomization() {
+            if (!currentItem) return;
+            
+            // For drinks, add sugar level
+            if (currentItem.category !== 'bakery') {
+                selectedOptions.sugar = document.getElementById('sugarSlider').value + '%';
+            }
+            
+            App.addToCart(currentItem, selectedOptions);
+            App.closeModal('customizerModal');
+        }
+        const menuItems = [
+            { id: 1, name: 'Espresso Double', price: 120, category: 'hot', desc: 'A strong, intense, and bold double shot of our signature dark roast.', img: 'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?auto=format&fit=crop&w=800&q=80', isPopular: true, rating: 4.9 },
+            { id: 2, name: 'Americano', price: 130, category: 'hot', desc: 'Classic smooth black coffee made with hot water and premium espresso.', img: 'https://images.unsplash.com/photo-1551033406-611cf9a28f67?auto=format&fit=crop&w=800&q=80', isPopular: true, rating: 4.8 },
+            { id: 3, name: 'Cappuccino', price: 150, category: 'hot', desc: 'Rich espresso layered with steamed milk and a deep, pillowy layer of foam.', img: 'https://images.unsplash.com/photo-1534778101976-62847782c213?auto=format&fit=crop&w=800&q=80', isPopular: true, rating: 4.7 },
+            { id: 4, name: 'Latte Macchiato', price: 160, category: 'hot', desc: 'Steamed milk gently stained with a slow-poured shot of espresso.', img: 'https://images.unsplash.com/photo-1461023058943-07cb1490c651?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.6 },
+            { id: 5, name: 'Mocha', price: 180, category: 'hot', desc: 'A delightful blend of espresso, bittersweet chocolate sauce, and steamed milk.', img: 'https://images.unsplash.com/photo-1442512595331-e89e73853f31?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.5 },
+            { id: 6, name: 'Flat White', price: 170, category: 'hot', desc: 'Smooth ristretto shots of espresso with expertly steamed velvety whole milk.', img: 'https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.6 },
+            { id: 7, name: 'Cortado', price: 140, category: 'hot', desc: 'Equal parts of rich espresso and warm milk to reduce the acidity.', img: 'https://images.unsplash.com/photo-1538587888044-79f13ddd7e49?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.9 },
+            { id: 8, name: 'Macchiato', price: 130, category: 'hot', desc: 'A traditional espresso shot marked with a dollop of frothed milk.', img: 'https://images.unsplash.com/photo-1485808191679-5f8f983c3ba0?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.7 },
+            { id: 9, name: 'Irish Coffee', price: 220, category: 'hot', desc: 'Hot coffee, Irish whiskey, and sugar, topped with thick cream.', img: 'https://images.unsplash.com/photo-1572442388788-ce37c4e6eec2?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.7 },
+            { id: 10, name: 'Affogato', price: 190, category: 'hot', desc: 'A decadent dessert-style coffee with espresso poured over vanilla gelato.', img: 'https://images.unsplash.com/photo-1594631252845-29ce6f52304b?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.8 },
+            { id: 11, name: 'Vienna Coffee', price: 160, category: 'hot', desc: 'Two shots of strong black espresso topped with whipped cream instead of milk.', img: 'https://images.unsplash.com/photo-1514432324607-a10c97726f1c?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.9 },
+            { id: 12, name: 'Ristretto', price: 110, category: 'hot', desc: 'A short, concentrated, and sweeter shot of espresso.', img: 'https://images.unsplash.com/photo-1510707577719-fa7413f07b4e?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.8 },
+            { id: 13, name: 'Lungo', price: 120, category: 'hot', desc: 'An extended espresso shot, allowing more water to pass through the grounds.', img: 'https://images.unsplash.com/photo-1521316730702-8290a13302ab?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.4 },
+            { id: 14, name: 'Cafe au Lait', price: 150, category: 'hot', desc: 'Freshly brewed dark roast coffee with steamed milk.', img: 'https://images.unsplash.com/photo-1481833761820-0509d32170b7?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.6 },
+            { id: 15, name: 'Breve', price: 170, category: 'hot', desc: 'A rich and creamy espresso-based drink made with steamed half-and-half.', img: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.5 },
+            { id: 16, name: 'Red Eye', price: 180, category: 'hot', desc: 'A cup of strong brewed coffee with an added shot of espresso for extra kick.', img: 'https://images.unsplash.com/photo-1512568400610-ed411132df14?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.6 },
+            { id: 17, name: 'Black Eye', price: 200, category: 'hot', desc: 'For the bold: brewed coffee with a double shot of intense espresso.', img: 'https://images.unsplash.com/photo-1482350325008-eda3892797a1?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.4 },
+            { id: 18, name: 'Doppio', price: 120, category: 'hot', desc: 'A straightforward, unadulterated double shot of our finest espresso.', img: 'https://images.unsplash.com/photo-1493857671505-72967e2d2760?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.3 },
+            { id: 19, name: 'Galao', price: 140, category: 'hot', desc: 'A Portuguese signature: espresso mixed with foamed milk in a tall glass.', img: 'https://images.unsplash.com/photo-1518057111178-44a106bad636?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.4 },
+            { id: 20, name: 'Frappe', price: 210, category: 'hot', desc: 'A blended hot coffee drink, surprisingly frothy and deeply flavorful.', img: 'https://images.unsplash.com/photo-1506815918349-2f2bdfc836cc?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.8 },
+            { id: 21, name: 'Iced Latte', price: 160, category: 'cold', desc: 'Chilled milk over ice, crowned with a smooth shot of espresso.', img: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&w=800&q=80', isPopular: true, rating: 4.7 },
+            { id: 22, name: 'Cold Brew', price: 180, category: 'cold', desc: 'Slow-steeped for 20 hours to create a super smooth, less acidic coffee.', img: 'https://images.unsplash.com/photo-1461023058943-07cb1490c651?auto=format&fit=crop&w=800&q=80', isPopular: true, rating: 4.3 },
+            { id: 23, name: 'Iced Caramel Macchiato', price: 190, category: 'cold', desc: 'Vanilla syrup, milk, and ice topped with espresso and a caramel drizzle.', img: 'https://images.unsplash.com/photo-1485808191679-5f8f983c3ba0?auto=format&fit=crop&w=800&q=80', isPopular: true, rating: 4.9 },
+            { id: 24, name: 'Strawberry Smoothie', price: 200, category: 'cold', desc: 'Fresh strawberries blended with yogurt and ice for a refreshing treat.', img: 'https://images.unsplash.com/photo-1464195244916-405fa0a82545?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.3 },
+            { id: 25, name: 'Mango Smoothie', price: 200, category: 'cold', desc: 'Tropical alphonso mangoes blended thick and smooth with cold milk.', img: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.8 },
+            { id: 26, name: 'Iced Mocha', price: 190, category: 'cold', desc: 'Espresso combined with mocha sauce and milk over ice.', img: 'https://images.unsplash.com/photo-1499961142455-c8bafd20860c?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.4 },
+            { id: 27, name: 'Vanilla Frappuccino', price: 220, category: 'cold', desc: 'A rich and creamy blend of vanilla bean, milk, and ice, topped with whipped cream.', img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.8 },
+            { id: 28, name: 'Lemonade', price: 120, category: 'cold', desc: 'Freshly squeezed lemons with a hint of mint and ice.', img: 'https://images.unsplash.com/photo-1525914809-5a823ed61a1d?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.3 },
+            { id: 29, name: 'Iced Americano', price: 140, category: 'cold', desc: 'Espresso shots topped with cold water and ice for a refreshing lift.', img: 'https://images.unsplash.com/photo-1579954115545-a9539d058f32?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.7 },
+            { id: 30, name: 'Chocolate Milkshake', price: 180, category: 'cold', desc: 'Thick, creamy, and indulgent milkshake made with premium Belgian chocolate.', img: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.6 },
+            { id: 31, name: 'Iced Matcha', price: 210, category: 'cold', desc: 'Premium Japanese matcha green tea blended with milk and ice.', img: 'https://images.unsplash.com/photo-1502159212845-f31a19546a5d?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.4 },
+            { id: 32, name: 'Peach Iced Tea', price: 150, category: 'cold', desc: 'A sweet and fruity iced black tea infused with natural peach flavor.', img: 'https://images.unsplash.com/photo-1515431610996-5e5ce4b025b3?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.6 },
+            { id: 33, name: 'Berry Blast', price: 210, category: 'cold', desc: 'A medley of mixed berries blended into a refreshing, antioxidant-rich smoothie.', img: 'https://images.unsplash.com/photo-1515823136277-3e81792dc8d8?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.6 },
+            { id: 34, name: 'Mint Mojito Coffee', price: 190, category: 'cold', desc: 'A uniquely refreshing iced coffee muddled with fresh mint leaves.', img: 'https://images.unsplash.com/photo-1498603612808-1cc63e7bce8c?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.9 },
+            { id: 35, name: 'Iced Vanilla Latte', price: 170, category: 'cold', desc: 'Our classic iced latte sweetened with aromatic vanilla syrup.', img: 'https://images.unsplash.com/photo-1514516142144-884ebbbbc23f?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.8 },
+            { id: 36, name: 'Cold Brew Nitro', price: 220, category: 'cold', desc: 'Our signature cold brew infused with nitrogen for a creamy, velvety texture.', img: 'https://images.unsplash.com/photo-1463132640232-a727e1f72782?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.8 },
+            { id: 37, name: 'Banana Smoothie', price: 170, category: 'cold', desc: 'Sweet bananas blended with honey and milk for a healthy boost.', img: 'https://images.unsplash.com/photo-1531776516-43e62a1af828?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.9 },
+            { id: 38, name: 'Iced White Mocha', price: 200, category: 'cold', desc: 'Espresso, white chocolate sauce, milk, and ice, topped with sweetened whipped cream.', img: 'https://images.unsplash.com/photo-1482015527539-78711bd45941?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.5 },
+            { id: 39, name: 'Passionfruit Iced Tea', price: 160, category: 'cold', desc: 'Vibrant and tangy passionfruit blended with our classic iced tea.', img: 'https://images.unsplash.com/photo-1511018556440-8e5da78f6534?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.6 },
+            { id: 40, name: 'Caramel Frappuccino', price: 230, category: 'cold', desc: 'Caramel syrup meets coffee, milk, and ice for a chunky, delicious blend.', img: 'https://images.unsplash.com/photo-1510433604052-a526fb5165dc?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.4 },
+            { id: 41, name: 'Butter Croissant', price: 110, category: 'bakery', desc: 'Flaky, golden-brown, buttery French pastry baked fresh every morning.', img: 'https://images.unsplash.com/photo-1555507036-ab1d4075c6f5?auto=format&fit=crop&w=800&q=80', isPopular: true, rating: 4.5 },
+            { id: 42, name: 'Cheese Cake', price: 190, category: 'bakery', desc: 'Creamy, dense New York style cheese cake served with a berry compote.', img: 'https://images.unsplash.com/photo-1524351199678-941a58a3df50?auto=format&fit=crop&w=800&q=80', isPopular: true, rating: 4.8 },
+            { id: 43, name: 'Blueberry Muffin', price: 120, category: 'bakery', desc: 'Soft and tender muffin bursting with juicy wild blueberries.', img: 'https://images.unsplash.com/photo-1509365465974-eb6b1c515a43?auto=format&fit=crop&w=800&q=80', isPopular: true, rating: 4.5 },
+            { id: 44, name: 'Chocolate Chip Cookie', price: 90, category: 'bakery', desc: 'Oven-warm cookie loaded with giant gooey chocolate chunks.', img: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.8 },
+            { id: 45, name: 'Cinnamon Roll', price: 140, category: 'bakery', desc: 'Soft dough swirled with cinnamon sugar and topped with rich cream cheese icing.', img: 'https://images.unsplash.com/photo-1495147466023-0650ed8bc727?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.7 },
+            { id: 46, name: 'Banana Bread', price: 110, category: 'bakery', desc: 'Moist and sweet banana bread slice, lightly toasted and buttered.', img: 'https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.4 },
+            { id: 47, name: 'Almond Croissant', price: 150, category: 'bakery', desc: 'Classic croissant filled with sweet almond frangipane and topped with sliced almonds.', img: 'https://images.unsplash.com/photo-1505253716362-afbea1d8c117?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.4 },
+            { id: 48, name: 'Red Velvet Cake', price: 200, category: 'bakery', desc: 'Decadent red velvet sponge with layers of smooth cream cheese frosting.', img: 'https://images.unsplash.com/photo-1505976378778-9e6b6bb5f690?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.4 },
+            { id: 49, name: 'Brownie', price: 130, category: 'bakery', desc: 'Fudgy, dense, and ultra-chocolatey brownie with a crackly top.', img: 'https://images.unsplash.com/photo-1506084868230-bb9ed95c68bb?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.4 },
+            { id: 50, name: 'Apple Pie', price: 160, category: 'bakery', desc: 'Traditional flaky crust filled with spiced, tender cinnamon apples.', img: 'https://images.unsplash.com/photo-1488477181947-f15278478faa?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.7 },
+            { id: 51, name: 'Lemon Tart', price: 150, category: 'bakery', desc: 'A buttery tart shell filled with zesty and sharp lemon curd.', img: 'https://images.unsplash.com/photo-1509343259988-b1d515286104?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.6 },
+            { id: 52, name: 'Carrot Cake', price: 180, category: 'bakery', desc: 'Spiced carrot cake with walnuts, raisins, and a cream cheese frosting.', img: 'https://images.unsplash.com/photo-1484069560501-169ee4dc3518?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.9 },
+            { id: 53, name: 'Tiramisu', price: 210, category: 'bakery', desc: 'Classic Italian dessert with espresso-soaked ladyfingers and mascarpone.', img: 'https://images.unsplash.com/photo-1508688404481-28565b0c950a?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.6 },
+            { id: 54, name: 'Danish Pastry', price: 130, category: 'bakery', desc: 'Flaky pastry filled with sweet cream cheese and topped with fruit preserves.', img: 'https://images.unsplash.com/photo-1485081669829-bacb8c7bb1f3?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.7 },
+            { id: 55, name: 'Bagel with Cream Cheese', price: 120, category: 'bakery', desc: 'Toasted authentic New York style bagel smeared with rich cream cheese.', img: 'https://images.unsplash.com/photo-1473256599800-b48c7c70bd46?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.9 },
+            { id: 56, name: 'Macarons', price: 250, category: 'bakery', desc: 'A delicate box of 3 assorted French macarons with ganache filling.', img: 'https://images.unsplash.com/photo-1557308536-ee471ef2f534?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.7 },
+            { id: 57, name: 'Eclair', price: 140, category: 'bakery', desc: 'Choux pastry filled with vanilla custard and dipped in chocolate fondant.', img: 'https://images.unsplash.com/photo-1508219665893-b4d6b6e40d04?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.5 },
+            { id: 58, name: 'Pound Cake', price: 110, category: 'bakery', desc: 'A slice of dense, buttery, and vanilla-scented classic pound cake.', img: 'https://images.unsplash.com/photo-1511018556440-8e5da78f6534?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.6 },
+            { id: 59, name: 'Scone', price: 100, category: 'bakery', desc: 'Crumbly English scone served warm with clotted cream and strawberry jam.', img: 'https://images.unsplash.com/photo-1483695028939-5bb13f8648b0?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.7 },
+            { id: 60, name: 'Baguette Sandwich', price: 220, category: 'bakery', desc: 'Crispy French baguette filled with premium cheese, lettuce, and meats.', img: 'https://images.unsplash.com/photo-1564834724105-918b73d1b9e0?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.5 },
+            { id: 61, name: 'Matcha Latte', price: 200, category: 'tea', desc: 'Premium grade matcha green tea whisked with gently steamed milk.', img: 'https://images.unsplash.com/photo-1536514072410-5019a3c69182?auto=format&fit=crop&w=800&q=80', isPopular: true, rating: 4.8 },
+            { id: 62, name: 'Earl Grey', price: 130, category: 'tea', desc: 'A classic black tea infused with the citrusy aroma of bergamot oil.', img: 'https://images.unsplash.com/photo-1594631252845-29ce6f52304b?auto=format&fit=crop&w=800&q=80', isPopular: true, rating: 4.3 },
+            { id: 63, name: 'English Breakfast', price: 120, category: 'tea', desc: 'A robust, full-bodied black tea blend, perfect for starting the day.', img: 'https://images.unsplash.com/photo-1576092762791-dd9e2220d563?auto=format&fit=crop&w=800&q=80', isPopular: true, rating: 4.8 },
+            { id: 64, name: 'Chamomile Tea', price: 140, category: 'tea', desc: 'A soothing, caffeine-free herbal infusion made from whole chamomile flowers.', img: 'https://images.unsplash.com/photo-1544787219-7f47cc8bc53b?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.6 },
+            { id: 65, name: 'Green Tea', price: 130, category: 'tea', desc: 'Light and refreshing pan-fired green tea leaves packed with antioxidants.', img: 'https://images.unsplash.com/photo-1582787019864-16a7fdb9b252?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.6 },
+            { id: 66, name: 'Peppermint Tea', price: 120, category: 'tea', desc: 'A brisk, refreshing herbal tea made with pure peppermint leaves.', img: 'https://images.unsplash.com/photo-1564890369474-722a7f5bcbf7?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.6 },
+            { id: 67, name: 'Oolong Tea', price: 160, category: 'tea', desc: 'A semi-oxidized tea offering a complex flavor profile between green and black tea.', img: 'https://images.unsplash.com/photo-1596484552834-6a58f850d032?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.8 },
+            { id: 68, name: 'Darjeeling Tea', price: 150, category: 'tea', desc: 'The \'champagne of teas\', offering a delicate, floral, and slightly musky flavor.', img: 'https://images.unsplash.com/photo-1571212891395-9cd8c21a1fc8?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.9 },
+            { id: 69, name: 'Jasmine Pearl', price: 180, category: 'tea', desc: 'Hand-rolled green tea pearls naturally scented with fresh jasmine blossoms.', img: 'https://images.unsplash.com/photo-1558160074-4d7d8bdf925f?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.5 },
+            { id: 70, name: 'Chai Latte', price: 170, category: 'tea', desc: 'Spiced black tea blended with warm milk, cinnamon, cardamom, and ginger.', img: 'https://images.unsplash.com/photo-1570535316358-052445b410de?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.5 },
+            { id: 71, name: 'Hibiscus Tea', price: 140, category: 'tea', desc: 'A vibrant, ruby-red herbal tea with a tart, cranberry-like flavor.', img: 'https://images.unsplash.com/photo-1555543788-b2170327f311?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.6 },
+            { id: 72, name: 'Rooibos Tea', price: 150, category: 'tea', desc: 'A naturally sweet, caffeine-free red bush tea from South Africa.', img: 'https://images.unsplash.com/photo-1520626388484-9bc0abdbce30?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.7 },
+            { id: 73, name: 'White Tea', price: 170, category: 'tea', desc: 'The most delicate tea, made from young leaves for a subtle, sweet flavor.', img: 'https://images.unsplash.com/photo-1563805042-7684c8b9e98c?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.5 },
+            { id: 74, name: 'Lemon Ginger Tea', price: 130, category: 'tea', desc: 'A zesty and warming herbal blend of fresh ginger and lemon peel.', img: 'https://images.unsplash.com/photo-1573041908000-0e786bceccdb?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.7 },
+            { id: 75, name: 'Yerba Mate', price: 160, category: 'tea', desc: 'A traditional South American energizing tea with an earthy, robust flavor.', img: 'https://images.unsplash.com/photo-1559524021-0e86b0daeef7?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.4 },
+            { id: 76, name: 'Sencha Green Tea', price: 150, category: 'tea', desc: 'A classic Japanese steamed green tea with a sweet and grassy flavor.', img: 'https://images.unsplash.com/photo-1541747169-2708bc172151?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.4 },
+            { id: 77, name: 'Pu-erh Tea', price: 190, category: 'tea', desc: 'A fermented, aged dark tea with a deeply earthy and rich profile.', img: 'https://images.unsplash.com/photo-1560699264-a6217d8ef0b3?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.7 },
+            { id: 78, name: 'Lapsang Souchong', price: 160, category: 'tea', desc: 'A distinctively smoky black tea, smoke-dried over pinewood fires.', img: 'https://images.unsplash.com/photo-1556943806-a9792613ce47?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.5 },
+            { id: 79, name: 'Rose Petal Tea', price: 170, category: 'tea', desc: 'A fragrant and elegant herbal infusion made from dried rose petals.', img: 'https://images.unsplash.com/photo-1561044458-9a2f768b5849?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.8 },
+            { id: 80, name: 'Assam Tea', price: 130, category: 'tea', desc: 'A brisk, malty, and strong black tea grown in the Indian region of Assam.', img: 'https://images.unsplash.com/photo-1573336712-1f3c301625f3?auto=format&fit=crop&w=800&q=80', isPopular: false, rating: 4.8 }
+        ];
+
+        let currentCategory = 'all';
+        let searchQuery = '';
+        let currentSort = 'default';
+
+        function setSort(val, btn) {
+            currentSort = val;
+            if (btn) {
+                document.querySelectorAll('.sort-seg-btn').forEach(el => el.classList.remove('active'));
+                btn.classList.add('active');
+            }
+            renderMenu();
+        }
+
+        function renderMenu() {
+            const grid = document.getElementById('menuGrid');
+            grid.innerHTML = '';
+
+            const filtered = menuItems.filter(item => {
+                let categoryMatch = false;
+                if (currentCategory === 'all') categoryMatch = true;
+                else if (currentCategory === 'popular') categoryMatch = item.isPopular;
+                else categoryMatch = item.category === currentCategory;
+
+                let searchMatch = true;
+                if (searchQuery) {
+                    const q = searchQuery.toLowerCase().replace(/[.,]/g, '');
+                    searchMatch = item.name.toLowerCase().includes(q) || 
+                                  item.desc.toLowerCase().includes(q) || 
+                                  item.category.toLowerCase().includes(q);
+                }
+
+                return categoryMatch && searchMatch;
+            });
+
+            if (currentSort === 'lowToHigh') {
+                filtered.sort((a, b) => a.price - b.price);
+            } else if (currentSort === 'highToLow') {
+                filtered.sort((a, b) => b.price - a.price);
+            }
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '<p style="color: var(--text-muted); text-align: center; grid-column: 1/-1; padding: 40px 0;">No items found matching your criteria.</p>';
+                return;
+            }
+
+            filtered.forEach(item => {
+                const isWished = App.isInWishlist(item.id);
+                const el = document.createElement('div');
+                el.className = 'card-desktop animate-fade-in';
+                el.innerHTML = `
+                    <div class="card-img-wrapper">
+                        <img src="${item.img}" alt="${item.name}">
+                        <div class="card-rating">⭐ ${item.rating || '4.5'}</div>
+                    </div>
+                    <h3 class="card-title">${item.name}</h3>
+                    <p class="card-desc">${item.desc}</p>
+                    <div class="card-bottom">
+                        <span class="card-price">₹${item.price}</span>
+                        <div class="card-actions">
+                            <button class="heart-btn ${isWished ? 'active' : ''}" onclick="toggleWish(${item.id}, this)">
+                                ❤️
+                            </button>
+                            <button class="add-to-cart-btn" onclick="openCustomizer(${JSON.stringify(item).replace(/"/g, '&quot;')})">Add to Cart</button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(el);
+            });
+        }
+
+        function setCategory(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('.filter-btn').forEach(el => {
+                el.classList.remove('active');
+            });
+            // Find correct button
+            event.currentTarget.classList.add('active');
+            
+            // Reset sorting to default when category changes
+            currentSort = 'default';
+            document.querySelectorAll('.sort-seg-btn').forEach(el => el.classList.remove('active'));
+            const defaultBtn = document.querySelector('.sort-seg-btn[onclick*="default"]');
+            if (defaultBtn) defaultBtn.classList.add('active');
+
+            renderMenu();
+
+            // Smooth scroll down to the explore section
+            const container = document.querySelector('.explore-section');
+            if (container) {
+                const offset = 90; // Adjust for sticky navbar
+                const bodyRect = document.body.getBoundingClientRect().top;
+                const elementRect = container.getBoundingClientRect().top;
+                const elementPosition = elementRect - bodyRect;
+                const offsetPosition = elementPosition - offset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        function toggleWish(id, btn) {
+            const item = menuItems.find(i => i.id === id);
+            if (item) {
+                App.toggleWishlist(item);
+                const nowWished = App.isInWishlist(id);
+                btn.classList.toggle('active', nowWished);
+            }
+        }
+
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            renderMenu();
+        });
+
+        // Voice Search Logic
+        const voiceBtn = document.getElementById('voiceSearchBtn');
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+
+            recognition.onstart = () => {
+                voiceBtn.classList.add('mic-active');
+                App.showToast('Listening...', 'info');
+            };
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript.trim().replace(/[.,]/g, '');
+                document.getElementById('searchInput').value = transcript;
+                searchQuery = transcript;
+                renderMenu();
+                App.showToast(`Searched for: "${transcript}"`, 'success');
+            };
+
+            recognition.onerror = (event) => {
+                App.showToast('Voice search failed. Please try again.', 'error');
+            };
+
+            recognition.onend = () => {
+                voiceBtn.classList.remove('mic-active');
+            };
+
+            voiceBtn.addEventListener('click', () => {
+                recognition.start();
+            });
+        } else {
+            voiceBtn.style.display = 'none'; // Hide if not supported
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderMenu();
+            App.updateCartBadge();
+        });
+
+        // Back to Top Logic
+        window.addEventListener('scroll', () => {
+            const btn = document.getElementById('backToTop');
+            if (window.scrollY > 300) {
+                btn.classList.add('show');
+            } else {
+                btn.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>

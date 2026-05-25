@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Café | My Profile</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .profile-layout {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .profile-pic-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 20px;
+        }
+
+        .profile-pic {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--accent-color);
+            box-shadow: 0 10px 30px rgba(212, 163, 115, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .edit-pic-btn {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .edit-pic-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .profile-card {
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+
+        .detail-group {
+            margin-bottom: 25px;
+        }
+
+        .detail-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .detail-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .edit-form {
+            display: none;
+        }
+
+        .edit-mode .edit-form {
+            display: block;
+        }
+
+        .edit-mode .detail-display {
+            display: none;
+        }
+
+        /* Avatar Selection Grid */
+        .avatar-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .avatar-option {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+            object-fit: cover;
+        }
+
+        .avatar-option:hover {
+            transform: scale(1.05);
+            border-color: var(--accent-color);
+        }
+
+        .avatar-option.selected {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px var(--accent-color);
+        }
+
+        /* Loyalty Card */
+        .loyalty-card {
+            background: linear-gradient(135deg, rgba(212, 163, 115, 0.15), rgba(255,255,255,0.03));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(212, 163, 115, 0.3);
+            border-radius: 24px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+
+        .loyalty-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 25px;
+        }
+
+        .loyalty-label { font-size: 0.7rem; color: var(--accent-color); font-weight: 800; text-transform: uppercase; letter-spacing: 2px; }
+        .loyalty-points { font-size: 2.5rem; font-weight: 800; color: #fff; line-height: 1; }
+        .loyalty-points span { font-size: 1rem; color: var(--text-muted); font-weight: 400; }
+
+        .tier-badge {
+            background: linear-gradient(135deg, #e8c994, var(--accent-color));
+            color: #000;
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            box-shadow: 0 5px 15px rgba(212, 163, 115, 0.4);
+        }
+
+        .loyalty-progress-wrap {
+            width: 100%; height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            margin: 20px 0 10px;
+            overflow: hidden;
+        }
+
+        .loyalty-progress-bar {
+            height: 100%;
+            background: var(--accent-color);
+            width: 0%; /* Dynamic */
+            box-shadow: 0 0 15px var(--accent-color);
+            transition: width 1s ease-out;
+        }
+
+        .reward-info { font-size: 0.8rem; color: var(--text-muted); }
+
+        /* Rewards Grid */
+        .rewards-section { margin-top: 40px; }
+        .rewards-section h3 { margin-bottom: 20px; font-size: 1.2rem; }
+        
+        .rewards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .reward-item {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--panel-border);
+            border-radius: 18px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .reward-item:hover {
+            border-color: var(--accent-color);
+            background: rgba(212, 163, 115, 0.05);
+        }
+
+        .reward-icon { font-size: 1.5rem; margin-bottom: 10px; }
+        .reward-name { font-size: 0.9rem; font-weight: 700; margin-bottom: 4px; }
+        .reward-cost { font-size: 0.75rem; color: var(--accent-color); font-weight: 800; }
+
+        .reward-item.locked { opacity: 0.5; cursor: not-allowed; }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 15px;
+            border: 1px solid var(--panel-border);
+        }
+
+        .stat-val {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--accent-color);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar glass-panel" style="border-radius: 0; border-bottom: 1px solid var(--panel-border);">
+        <a href="home.html" class="navbar-brand">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 5px;"><path d="M17 8h1a4 4 0 1 1 0 8h-1"></path><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"></path><line x1="6" y1="2" x2="6" y2="4"></line><line x1="10" y1="2" x2="10" y2="4"></line><line x1="14" y1="2" x2="14" y2="4"></line></svg>
+            <span>Smart</span>Café
+        </a>
+        
+        <ul class="nav-links">
+            <li><a href="menu.html">Menu</a></li>
+            <li><a href="booking.html">Book a Table</a></li>
+            <li><a href="wishlist.html">Wishlist</a></li>
+            <li><a href="dashboard.html">My Orders</a></li>
+        </ul>
+
+        <div class="nav-actions">
+            <div class="nav-profile" onclick="window.location.href='profile.html'" title="My Profile" style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--accent-color); overflow: hidden; cursor: pointer; margin-left: 10px; display: flex; align-items: center; justify-content: center;">
+                <img src="" alt="P" id="navProfilePic" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                <svg id="profilePlaceholder" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            </div>
+            <button class="btn-icon" onclick="App.logout()" title="Logout" style="color: var(--danger); border-color: var(--danger); margin-left: 10px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            </button>
+        </div>
+    </nav>
+
+    <div style="padding: 20px 5%; margin-top: 10px;">
+        <a href="menu.html" class="back-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            Back
+        </a>
+    </div>
+
+    <div class="profile-layout animate-fade-in">
+        <div class="profile-header">
+            <div class="profile-pic-container">
+                <img src="" alt="Profile" class="profile-pic" id="displayPic">
+                <button class="edit-pic-btn" onclick="App.openModal('picModal')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                </button>
+            </div>
+            <h1 id="displayName" style="font-size: 2rem; margin-bottom: 5px;"></h1>
+            <h1 id="displayName" style="font-size: 2rem; margin-bottom: 5px;"></h1>
+        </div>
+
+        <!-- Loyalty System -->
+        <div class="loyalty-card animate-fade-in">
+            <div class="loyalty-header">
+                <div>
+                    <span class="loyalty-label">Loyalty Balance</span>
+                    <div class="loyalty-points" id="loyaltyPoints">0 <span>Points</span></div>
+                </div>
+                <div class="tier-badge" id="loyaltyTier">Member</div>
+            </div>
+            
+            <div class="loyalty-progress-wrap">
+                <div class="loyalty-progress-bar" id="loyaltyProgress"></div>
+            </div>
+            <p class="reward-info" id="rewardStatus">You're 500 points away from a free coffee!</p>
+        </div>
+
+        <div class="glass-panel profile-card" id="profileContent">
+            <!-- Details Rendered Here -->
+            <div class="detail-display">
+                <div class="detail-group">
+                    <span class="detail-label">Full Name</span>
+                    <span class="detail-value" id="valName"></span>
+                </div>
+                <div class="detail-group">
+                    <span class="detail-label">Phone Number</span>
+                    <span class="detail-value" id="valPhone">Not provided</span>
+                </div>
+                
+                <button class="btn-primary" onclick="toggleEdit(true)" style="width: 100%; margin-top: 10px;">
+                    Edit Details
+                </button>
+            </div>
+
+            <form class="edit-form" id="profileForm">
+                <!-- ... existing form ... -->
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" id="editName" required>
+                </div>
+                <div class="input-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="editPhone" placeholder="10-digit number" required pattern="[0-9]{10}">
+                </div>
+                <div class="input-group">
+                    <label>Date of Birth</label>
+                    <input type="date" id="editDob">
+                </div>
+                
+                <div style="display: flex; gap: 15px; margin-top: 20px;">
+                    <button type="button" class="btn-primary" style="flex: 1; background: transparent; border: 1px solid var(--panel-border); color: var(--text-main);" onclick="toggleEdit(false)">
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn-primary" style="flex: 1;">
+                        Save
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Rewards Catalog -->
+        <div class="rewards-section animate-fade-in" style="animation-delay: 0.2s;">
+            <h3>🎁 Redeem Rewards</h3>
+            <div class="rewards-grid">
+                <div class="reward-item" onclick="redeem(300, 'Free Espresso')">
+                    <div class="reward-icon">☕</div>
+                    <div class="reward-name">Free Espresso</div>
+                    <div class="reward-cost">300 PTS</div>
+                </div>
+                <div class="reward-item" onclick="redeem(500, 'Classic Croissant')">
+                    <div class="reward-icon">🥐</div>
+                    <div class="reward-name">Free Pastry</div>
+                    <div class="reward-cost">500 PTS</div>
+                </div>
+                <div class="reward-item" onclick="redeem(800, 'Any Large Coffee')">
+                    <div class="reward-icon">🥤</div>
+                    <div class="reward-name">Any Large Drink</div>
+                    <div class="reward-cost">800 PTS</div>
+                </div>
+                <div class="reward-item" onclick="redeem(1500, 'Smart Café Mug')">
+                    <div class="reward-icon">🏺</div>
+                    <div class="reward-name">Exclusive Mug</div>
+                    <div class="reward-cost">1500 PTS</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-item">
+                <span class="stat-val" id="statOrders">0</span>
+                <span class="stat-label">Orders</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-val" id="statJoined">2026</span>
+                <span class="stat-label">Joined</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Picture Selection Modal -->
+    <div class="modal-overlay" id="picModal">
+        <div class="modal-content glass-panel">
+            <div class="modal-header">
+                <h2>Choose Profile Picture</h2>
+                <button class="modal-close" onclick="App.closeModal('picModal')">×</button>
+            </div>
+            
+            <p style="color: var(--text-muted); margin-bottom: 20px;">Select from our premium avatars or upload your own.</p>
+            
+            <div class="avatar-grid">
+                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&h=150&q=80" class="avatar-option" onclick="selectAvatar(this)">
+                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&h=150&q=80" class="avatar-option" onclick="selectAvatar(this)">
+                <img src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=150&h=150&q=80" class="avatar-option" onclick="selectAvatar(this)">
+                <img src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?auto=format&fit=crop&w=150&h=150&q=80" class="avatar-option" onclick="selectAvatar(this)">
+                <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=150&h=150&q=80" class="avatar-option" onclick="selectAvatar(this)">
+                <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=150&h=150&q=80" class="avatar-option" onclick="selectAvatar(this)">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&h=150&q=80" class="avatar-option" onclick="selectAvatar(this)">
+                <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&h=150&q=80" class="avatar-option" onclick="selectAvatar(this)">
+            </div>
+
+            <div class="divider" style="margin: 25px 0;">or</div>
+
+            <div class="input-group">
+                <label>Upload from Device</label>
+                <input type="file" id="fileInput" accept="image/*" style="padding: 10px;">
+            </div>
+
+            <button class="btn-primary" style="width: 100%; margin-top: 10px;" onclick="saveProfilePic()">
+                Confirm Selection
+            </button>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        let selectedPicUrl = '';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!App.state.user) {
+                window.location.href = 'index.html';
+                return;
+            }
+            renderProfile();
+        });
+
+        function renderProfile() {
+            const user = App.state.user;
+            const orders = JSON.parse(localStorage.getItem('smartCafeOrders')) || [];
+            const points = user.points || 0;
+
+            document.getElementById('displayPic').src = user.profilePic || 'img/profile-default.png';
+            document.getElementById('displayName').innerText = user.name;
+
+            document.getElementById('valName').innerText = user.name;
+            document.getElementById('valPhone').innerText = user.phone || 'Not provided';
+
+            document.getElementById('editName').value = user.name;
+            document.getElementById('editPhone').value = user.phone || '';
+            document.getElementById('editDob').value = user.dob || '';
+
+            document.getElementById('statOrders').innerText = orders.length;
+            
+            // Loyalty Card Update
+            document.getElementById('loyaltyPoints').innerHTML = `${points} <span>Points</span>`;
+            
+            let tier = 'Member';
+            if (points > 1000) tier = 'Platinum';
+            else if (points > 500) tier = 'Gold';
+            else if (points > 200) tier = 'Silver';
+            document.getElementById('loyaltyTier').innerText = tier;
+
+            const progress = Math.min((points / 500) * 100, 100);
+            document.getElementById('loyaltyProgress').style.width = `${progress}%`;
+            
+            if (points < 500) {
+                document.getElementById('rewardStatus').innerText = `You're ${500 - points} points away from a free pastry! 🥐`;
+            } else {
+                document.getElementById('rewardStatus').innerText = `You have rewards ready to redeem! 🎉`;
+            }
+
+            selectedPicUrl = user.profilePic;
+        }
+
+        function redeem(cost, name) {
+            const points = App.state.user.points || 0;
+            if (points < cost) {
+                App.showToast(`You need ${cost - points} more points for this! 💎`, 'error');
+                return;
+            }
+
+            if (confirm(`Redeem ${cost} points for a ${name}?`)) {
+                App.updateProfile({ points: points - cost });
+                App.showToast(`Success! Your ${name} reward is now active. 🎁`, 'success');
+                renderProfile();
+            }
+        }
+
+        function toggleEdit(isEditing) {
+            const content = document.getElementById('profileContent');
+            if (isEditing) {
+                content.classList.add('edit-mode');
+            } else {
+                content.classList.remove('edit-mode');
+            }
+        }
+
+        document.getElementById('profileForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const newName = document.getElementById('editName').value;
+            const newPhone = document.getElementById('editPhone').value;
+            const newDob = document.getElementById('editDob').value;
+            
+            App.updateProfile({ 
+                name: newName, 
+                phone: newPhone, 
+                dob: newDob 
+            });
+            renderProfile();
+            toggleEdit(false);
+        });
+
+        function selectAvatar(el) {
+            document.querySelectorAll('.avatar-option').forEach(opt => opt.classList.remove('selected'));
+            el.classList.add('selected');
+            selectedPicUrl = el.src;
+        }
+
+        // Handle File Upload
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    selectedPicUrl = event.target.result;
+                    // Visually show it's selected (clear other selections)
+                    document.querySelectorAll('.avatar-option').forEach(opt => opt.classList.remove('selected'));
+                    App.showToast('Photo uploaded! Click confirm to save.', 'info');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function saveProfilePic() {
+            if (selectedPicUrl) {
+                App.updateProfile({ profilePic: selectedPicUrl });
+                document.getElementById('displayPic').src = selectedPicUrl;
+                App.closeModal('picModal');
+            }
+        }
+    </script>
+</body>
+</html>

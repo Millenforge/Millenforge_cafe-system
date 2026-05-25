@@ -1,0 +1,13 @@
+{
+  "name": "smart-cafe",
+  "version": "1.0.0",
+  "description": "Premium Coffee Experience Web Application",
+  "main": "index.html",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

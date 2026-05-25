@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0f0c0b">
+    <title>Smart Café | Home</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="prefetch" href="menu.html">
+    <link rel="prefetch" href="booking.html">
+    <style>
+        html {
+            background: #0f0c0b;
+        }
+
+        .home-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: 0.8s cubic-bezier(0.7, 0, 0.3, 1);
+        }
+
+        /* Ken Burns Background */
+        .home-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 110%;
+            height: 110%;
+            background: url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            opacity: 0.3;
+            animation: kenburns 25s linear infinite;
+        }
+
+        .home-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at top, rgba(15, 12, 11, 0.6) 0%, rgba(15, 12, 11, 0.95) 70%);
+        }
+
+        /* Top Bar */
+        .home-topbar {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 30px;
+        }
+
+        .home-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .home-logo span {
+            color: var(--accent-color);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-profile {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-color);
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .nav-profile img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .live-tag {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(42, 157, 143, 0.1);
+            padding: 4px 10px;
+            border-radius: 100px;
+            font-size: 0.6rem;
+            font-weight: 800;
+            color: var(--success);
+            border: 1px solid rgba(42, 157, 143, 0.2);
+            letter-spacing: 1px;
+            margin-left: 5px;
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            background: var(--success);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--success);
+            animation: pulse-dot 1.5s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.4);
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Main Content */
+        .home-main {
+            position: relative;
+            z-index: 10;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .home-greeting {
+            font-size: 0.8rem;
+            color: var(--accent-color);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            opacity: 0;
+            animation: fadeUp 0.6s ease 0.1s both;
+        }
+
+        .home-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+            background: linear-gradient(to right, #fff, var(--accent-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            animation: fadeUp 0.6s ease 0.2s both;
+        }
+
+        .home-subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeUp 0.6s ease 0.3s both;
+        }
+
+        /* Unique Mood Matcher */
+        .mood-matcher {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(212, 163, 115, 0.2);
+            border-radius: 30px;
+            padding: 20px;
+            width: 100%;
+            max-width: 480px;
+            margin-bottom: 25px;
+            opacity: 0;
+            animation: fadeUp 0.7s ease 0.4s both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .live-status {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.6rem;
+            font-weight: 900;
+            color: var(--success);
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
+
+        .dot {
+            width: 5px;
+            height: 5px;
+            background: var(--success);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--success);
+            animation: pulse-dot 1.5s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.4);
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .mood-title {
+            font-size: 0.9rem;
+            color: #fff;
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-align: left;
+        }
+
+        .mood-slider-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .mood-emojis {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.8rem;
+            padding: 0 10px;
+        }
+
+        .mood-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 4px;
+            background: rgba(212, 163, 115, 0.2);
+            border-radius: 10px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .mood-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--accent-color);
+            border: 3px solid #0f0c0b;
+        }
+
+        .matched-coffee {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 20px;
+            border: 1px solid rgba(212, 163, 115, 0.1);
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: scale(0.9);
+            opacity: 0;
+        }
+
+        .matched-coffee.show {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .matched-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            object-fit: cover;
+            border: 1px solid var(--accent-color);
+        }
+
+        .match-rating {
+            background: rgba(42, 157, 143, 0.15);
+            color: var(--success);
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-size: 0.6rem;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            margin-bottom: 4px;
+            border: 1px solid rgba(42, 157, 143, 0.2);
+        }
+
+        .matched-info h4 {
+            font-size: 1rem;
+            color: var(--accent-color);
+            margin-bottom: 2px;
+        }
+
+        .matched-info p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Action Cards */
+        .action-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            max-width: 600px;
+            width: 100%;
+            opacity: 0;
+            animation: fadeUp 0.7s ease 0.4s both;
+        }
+
+        .action-card {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(212, 163, 115, 0.15);
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .action-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            border-color: var(--accent-color);
+            box-shadow: 0 25px 60px rgba(212, 163, 115, 0.25);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.6s ease;
+        }
+
+        .action-card:hover .card-image {
+            transform: scale(1.08);
+        }
+
+        .card-image-wrap {
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card-image-wrap::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            background: linear-gradient(to top, rgba(15, 12, 11, 1), transparent);
+        }
+
+        .card-body {
+            padding: 15px 20px;
+            position: relative;
+        }
+
+        .card-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--accent-color), #e8c994);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            box-shadow: 0 5px 20px rgba(212, 163, 115, 0.3);
+            position: absolute;
+            top: -18px;
+            right: 20px;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+
+        .card-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+            padding-right: 35px;
+        }
+
+        .card-arrow {
+            position: absolute;
+            bottom: 8px;
+            right: 15px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(212, 163, 115, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-color);
+            transition: all 0.3s ease;
+        }
+
+        .action-card:hover .card-arrow {
+            background: var(--accent-color);
+            color: #000;
+            transform: translateX(3px);
+        }
+
+        /* Responsive */
+        @media (max-width: 500px) {
+            .action-cards {
+                grid-template-columns: 1fr;
+                max-width: 320px;
+            }
+
+            .home-title {
+                font-size: 1.8rem;
+            }
+
+            .card-image {
+                height: 120px;
+            }
+        }
+    </style>
+</head>
+
+<body style="opacity: 0; animation: pageEnter 0.5s ease 0.05s both;">
+    <style>
+        @keyframes pageEnter {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+
+    <div class="home-container" id="homeContainer">
+        <div class="home-bg"></div>
+        <div class="home-overlay"></div>
+
+        <!-- Top Bar -->
+        <div class="home-topbar">
+            <div class="home-logo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+                    stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 8h1a4 4 0 1 1 0 8h-1"></path>
+                    <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"></path>
+                    <line x1="6" y1="2" x2="6" y2="4"></line>
+                    <line x1="10" y1="2" x2="10" y2="4"></line>
+                    <line x1="14" y1="2" x2="14" y2="4"></line>
+                </svg>
+                <span>Smart</span>Café
+            </div>
+            <div class="nav-actions">
+                <button class="btn-icon" onclick="App.logout()" title="Logout"
+                    style="color: var(--danger); border-color: var(--danger);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Main -->
+        <div class="home-main">
+            <p class="home-greeting" id="greetingText">Welcome back</p>
+            <h1 class="home-title">What would you like?</h1>
+            <p class="home-subtitle">Choose an option or match your vibe below</p>
+
+            <!-- Mood Matcher Section -->
+            <div class="mood-matcher">
+                <div class="live-status">
+                    <div class="dot"></div>
+                    AI LIVE
+                </div>
+                <p class="mood-title">AI Mood Matcher: How are you feeling?</p>
+                <div class="mood-slider-wrap">
+                    <div class="mood-emojis">
+                        <span>😴</span><span>😎</span><span>👨‍💻</span><span>😃</span>
+                    </div>
+                    <input type="range" class="mood-slider" id="moodSlider" min="0" max="3" value="1">
+                </div>
+
+                <div class="matched-coffee show" id="matchedCoffee">
+                    <img src="https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&w=200&q=80"
+                        class="matched-img" id="matchImg">
+                    <div class="matched-info">
+                        <div class="match-rating" id="matchRating">⭐ 4.7</div>
+                        <h4 id="matchName">Vanilla Latte</h4>
+                        <p id="matchDesc">Perfect for a chilled out vibe.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-cards">
+                <!-- Menu Card -->
+                <div class="action-card" onclick="goTo('menu.html')">
+                    <div class="card-image-wrap">
+                        <img class="card-image"
+                            src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=600&q=80"
+                            alt="Menu">
+                    </div>
+                    <div class="card-body">
+                        <div class="card-icon">🍽️</div>
+                        <h3 class="card-title">Explore Menu</h3>
+                        <p class="card-desc">Browse our premium coffees, teas & snacks</p>
+                        <div class="card-arrow">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Table Booking Card -->
+                <div class="action-card" onclick="goTo('booking.html')">
+                    <div class="card-image-wrap">
+                        <img class="card-image"
+                            src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80"
+                            alt="Table Booking">
+                    </div>
+                    <div class="card-body">
+                        <div class="card-icon">🪑</div>
+                        <h3 class="card-title">Book a Table</h3>
+                        <p class="card-desc">Reserve your spot for a perfect café experience</p>
+                        <div class="card-arrow">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        // Redirect if not logged in
+        if (!App.state.user) {
+            window.location.href = 'index.html';
+        }
+
+        // Personalization Logic
+        const user = App.state.user || { name: 'Guest', points: 0 };
+        const userName = user.name;
+
+        const hour = new Date().getHours();
+        let greetingPrefix = '';
+        if (hour < 12) greetingPrefix = 'Good Morning';
+        else if (hour < 17) greetingPrefix = 'Good Afternoon';
+        else greetingPrefix = 'Good Evening';
+
+        const personalizedGreetings = [
+            `${greetingPrefix}, ${userName}! Your perfect cup is waiting. ☕`,
+            `Welcome back, ${userName}! Ready for a coffee break? ✨`,
+            `Hello ${userName}! The aroma of excellence awaits. 🥐`,
+            `${greetingPrefix}! What's brewing today, ${userName}? ☕`
+        ];
+
+        const finalGreeting = personalizedGreetings[Math.floor(Math.random() * personalizedGreetings.length)];
+        document.getElementById('greetingText').innerText = finalGreeting;
+
+        // Mood Matcher Logic
+        const moodData = [
+            { name: 'Double Espresso', desc: 'The ultimate wake-up call for tired mornings.', img: 'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?auto=format&fit=crop&w=800&q=80', rating: 4.9 },
+            { name: 'Vanilla Latte', desc: 'Smooth and sweet for a chilled-out afternoon.', img: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&w=800&q=80', rating: 4.7 },
+            { name: 'Cold Brew Nitro', desc: 'High caffeine and focus for your productive sessions.', img: 'https://images.unsplash.com/photo-1461023058943-07cb1490c651?auto=format&fit=crop&w=800&q=80', rating: 4.8 },
+            { name: 'Caramel Frappé', desc: 'A happy treat for a great day!', img: 'https://images.unsplash.com/photo-1510433604052-a526fb5165dc?auto=format&fit=crop&w=800&q=80', rating: 4.6 }
+        ];
+
+        const slider = document.getElementById('moodSlider');
+        const matchCard = document.getElementById('matchedCoffee');
+        const matchName = document.getElementById('matchName');
+        const matchDesc = document.getElementById('matchDesc');
+        const matchImg = document.getElementById('matchImg');
+
+        slider.addEventListener('input', (e) => {
+            const val = e.target.value;
+            const data = moodData[val];
+
+            // Animation effect
+            matchCard.classList.remove('show');
+            setTimeout(() => {
+                matchName.innerText = data.name;
+                matchDesc.innerText = data.desc;
+                matchImg.src = data.img;
+                document.getElementById('matchRating').innerText = `⭐ ${data.rating}`;
+                matchCard.classList.add('show');
+            }, 300);
+        });
+
+        function goTo(url) {
+            const container = document.getElementById('homeContainer');
+            container.style.opacity = '0';
+            container.style.transform = 'translateY(-100%)';
+            setTimeout(() => {
+                window.location.href = url;
+            }, 750);
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartCafe - Reset</title>
+    <style>
+        body {
+            background: #0f0c0b;
+            color: #fff;
+            font-family: sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .btn {
+            padding: 14px 30px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+        .btn-danger { background: #e63946; color: white; }
+        .btn-primary { background: #d4a373; color: #000; }
+        .btn:hover { transform: translateY(-3px); }
+        .msg { color: #2a9d8f; font-size: 1.1rem; display: none; }
+    </style>
+</head>
+<body>
+    <h2>☕ SmartCafe - Debug Panel</h2>
+    <p style="color:#888; text-align:center;">Agar app properly nahi chal raha hai,<br>niche "Reset App" button dabao.</p>
+    <button class="btn btn-danger" onclick="resetApp()">🔄 Reset App (Clear All Data)</button>
+    <button class="btn btn-primary" onclick="goHome()">🚀 Go to App</button>
+    <p class="msg" id="msg">✅ Reset complete! Redirecting...</p>
+
+    <script>
+        function resetApp() {
+            localStorage.clear();
+            sessionStorage.clear();
+            document.getElementById('msg').style.display = 'block';
+            setTimeout(() => window.location.href = 'index.html', 1500);
+        }
+        function goHome() {
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
